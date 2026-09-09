@@ -1,6 +1,7 @@
 import { BookOpen, ExternalLink, GitFork } from 'lucide-react'
 import { useState } from 'react'
 import './ReferenceLibrary.css'
+import { MathText } from './MathText'
 
 type ReferenceThread = 'all' | 'problem' | 'regularity' | 'waves' | 'blowup'
 
@@ -8,6 +9,7 @@ interface ReferenceItem {
   year: string
   authors: string
   title: string
+  mathTitle?: string
   venue: string
   href: string
   thread: Exclude<ReferenceThread, 'all'>
@@ -22,7 +24,7 @@ const references: ReferenceItem[] = [
     venue: 'Clay Mathematics Institute · Millennium Prize Problem statement',
     href: 'https://www.claymath.org/wp-content/uploads/2022/06/navierstokes.pdf',
     thread: 'problem',
-    note: 'The official problem statement. The whole-space breakdown result formalized here is alternative (C).',
+    note: 'The official problem statement. The whole-space breakdown result formalized here is alternative $(C)$.',
   },
   {
     year: '1934',
@@ -46,10 +48,11 @@ const references: ReferenceItem[] = [
     year: '2003',
     authors: 'Luis Escauriaza, Gregory Seregin, and Vladimír Šverák',
     title: 'L³,∞-solutions of the Navier–Stokes equations and backward uniqueness',
+    mathTitle: '$L^{3,\\infty}$-solutions of the Navier–Stokes equations and backward uniqueness',
     venue: 'Russian Mathematical Surveys 58',
     href: 'https://doi.org/10.1070/RM2003v058n02ABEH000609',
     thread: 'regularity',
-    note: 'Established regularity for the unforced Cauchy problem under the bounded scale-invariant L∞ₜL³ₓ condition.',
+    note: 'Established regularity for the unforced Cauchy problem under the bounded scale-invariant $L^\\infty_t L^3_x$ condition.',
   },
   {
     year: '2016',
@@ -179,8 +182,8 @@ export default function ReferenceLibrary({ paperUrl }: { paperUrl: string }) {
             <div className="reference-year">{reference.year}</div>
             <div>
               <span>{reference.authors}</span>
-              <h3>{reference.title}</h3>
-              <p>{reference.note}</p>
+              <h3><MathText>{reference.mathTitle ?? reference.title}</MathText></h3>
+              <p><MathText>{reference.note}</MathText></p>
               <small>{reference.venue}</small>
             </div>
             <a href={reference.href} target="_blank" rel="noreferrer" aria-label={`Open ${reference.title}`}>

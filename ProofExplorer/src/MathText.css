@@ -1,0 +1,10 @@
+.inline-math {
+  display: inline-block;
+  color: inherit;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.inline-math .katex {
+  font-size: 1em;
+}

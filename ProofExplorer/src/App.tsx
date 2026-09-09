@@ -23,6 +23,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import './App.css'
 import { CorePreview } from './CoreExplorer'
+import { InlineMath, MathText } from './MathText'
 import { lessonFor, proofStages, stageForStep } from './proofContent'
 import ReferenceLibrary from './ReferenceLibrary'
 import type { GoalSnapshot, Lens, ProofAction, ProofData, ProofStage } from './types'
@@ -32,11 +33,11 @@ const sourceUrl = `${repositoryUrl}/blob/feat/proof-animation/NavierStokes/Compa
 const paperUrl = 'https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf'
 
 const stageBeats: Record<string, string[]> = {
-  candidate: ['unpack u, p, and f', 'read the certificate h', 'keep the construction folded'],
-  'admissible-data': ['use compact support', 'replace f by ν²f', 'prove the decay condition'],
-  normalization: ['suppose v and q exist', 'rescale by ν⁻¹', 'verify the new solution'],
-  comparison: ['fix 0 ≤ t < 1', 'work on [0,t]', 'apply uniqueness'],
-  contradiction: ['obtain u = v₁', 'use smoothness of v₁', 'contradict h'],
+  candidate: ['unpack $u$, $p$, and $f$', 'read the certificate $h$', 'keep the construction folded'],
+  'admissible-data': ['use compact support', 'replace $f$ by $\\nu^2 f$', 'prove the decay condition'],
+  normalization: ['suppose $v$ and $q$ exist', 'rescale by $\\nu^{-1}$', 'verify the new solution'],
+  comparison: ['fix $0 \\le t < 1$', 'work on $[0,t]$', 'apply uniqueness'],
+  contradiction: ['obtain $u = v_1$', 'use smoothness of $v_1$', 'contradict $h$'],
 }
 
 function initialStepFromHash() {
@@ -107,21 +108,21 @@ function StoryPanel({ stage }: { stage: ProofStage }) {
     <div className="story-panel">
       <div className="story-copy">
         <div className="story-label"><BookOpen size={16} /> Mathematical argument</div>
-        <p className="story-lead">{stage.story}</p>
+        <p className="story-lead"><MathText>{stage.story}</MathText></p>
       </div>
       <div className="concept-flow" aria-label={`Outline for ${stage.title}`}>
         {stageBeats[stage.id].map((beat, index) => (
           <div className="concept-beat" key={beat}>
             <span>{index + 1}</span>
-            <strong>{beat}</strong>
+            <strong><MathText>{beat}</MathText></strong>
             {index < stageBeats[stage.id].length - 1 && <ArrowRight size={15} aria-hidden="true" />}
           </div>
         ))}
       </div>
       <details className="checkpoint">
         <summary><CircleHelp size={17} /> Pause and check</summary>
-        <p className="checkpoint-question">{stage.question}</p>
-        <p className="checkpoint-answer"><Lightbulb size={16} /> {stage.answer}</p>
+        <p className="checkpoint-question"><MathText>{stage.question}</MathText></p>
+        <p className="checkpoint-answer"><Lightbulb size={16} /> <span><MathText>{stage.answer}</MathText></span></p>
       </details>
     </div>
   )
@@ -223,13 +224,13 @@ function ProofWorkbench({
 
       <div className="tactic-section">
         <div className="tactic-meta">
-          <h3>{lesson.label}</h3>
+          <h3><MathText>{lesson.label}</MathText></h3>
           <span className="concept-pill"><Braces size={14} /> {lesson.concept}</span>
         </div>
         <pre className="tactic-code"><span className="prompt">by</span> {action.tacticText}</pre>
         <div className="lesson-grid">
-          <p>{lesson.summary}</p>
-          <p className="lean-detail"><Lightbulb size={16} /> {lesson.detail}</p>
+          <p><MathText>{lesson.summary}</MathText></p>
+          <p className="lean-detail"><Lightbulb size={16} /> <span><MathText>{lesson.detail}</MathText></span></p>
         </div>
       </div>
 
@@ -409,10 +410,10 @@ function App() {
                   <span className="verified"><CheckCircle2 size={14} /> checked</span>
                 </div>
                 <code>navier_stokes_breakdown_R3</code>
-                <p><span>∀</span> positive viscosity <strong>ν</strong>, there are smooth data for which no globally smooth finite-energy solution exists.</p>
+                <p>For every positive viscosity <InlineMath>{String.raw`\nu > 0`}</InlineMath>, there are smooth data for which no globally smooth finite-energy solution exists.</p>
                 <div className="theorem-card-footer">
-                  <span>ℝ³</span>
-                  <span>ν &gt; 0</span>
+                  <span><InlineMath>{String.raw`\mathbb{R}^3`}</InlineMath></span>
+                  <span><InlineMath>{String.raw`\nu > 0`}</InlineMath></span>
                   <span>finite-time blow-up</span>
                 </div>
               </div>
@@ -462,7 +463,7 @@ function App() {
                 <div>
                   <span className="stage-label">{activeStage.label}</span>
                   <h2>{activeStage.title}</h2>
-                  <p>{activeStage.summary}</p>
+                  <p><MathText>{activeStage.summary}</MathText></p>
                 </div>
               </header>
 

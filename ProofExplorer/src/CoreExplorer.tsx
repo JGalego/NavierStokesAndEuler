@@ -2,6 +2,7 @@ import { Info, Pause, Play } from 'lucide-react'
 import type { CSSProperties } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import './CorePreview.css'
+import { InlineMath, MathText } from './MathText'
 
 interface CoreGeometryProps {
   time: number
@@ -206,7 +207,7 @@ export function CorePreview() {
             <Info size={16} />
           </button>
           <p id="core-preview-explanation" role="tooltip">
-            The core contracts as its angular and axial speeds diverge. The readouts use h = 1/200, within the paper’s range 0 &lt; h &lt; 1/100.
+            <MathText>{'The core contracts as its angular and axial speeds diverge. The readouts use $h = 1/200$, within the paper’s range $0 < h < 1/100$.'}</MathText>
           </p>
         </div>
       </header>
@@ -217,19 +218,19 @@ export function CorePreview() {
       >
         <CoreGeometry time={time} idPrefix="hero-core" />
         <div className="core-preview-time" aria-live="polite">
-          <strong>t = {time.toFixed(3)}</strong>
-          <code>τ = {tau.toFixed(3)}</code>
+          <strong><InlineMath>{`t = ${time.toFixed(3)}`}</InlineMath></strong>
+          <span className="tau-value"><InlineMath>{String.raw`\tau = ${tau.toFixed(3)}`}</InlineMath></span>
         </div>
         <div className="core-preview-readouts" aria-label="Blowup scaling readouts">
           <div>
             <span>relative speed</span>
-            <strong>×{speedLabel}</strong>
-            <code>τ<sup>−1/2−h</sup></code>
+            <strong><InlineMath>{String.raw`\times ${speedLabel}`}</InlineMath></strong>
+            <span className="scaling-law"><InlineMath>{String.raw`\tau^{-1/2-h}`}</InlineMath></span>
           </div>
           <div>
             <span>core energy</span>
-            <strong>{Math.round(relativeEnergy * 100)}%</strong>
-            <code>τ<sup>1/2−3h</sup></code>
+            <strong><InlineMath>{String.raw`${Math.round(relativeEnergy * 100)}\%`}</InlineMath></strong>
+            <span className="scaling-law"><InlineMath>{String.raw`\tau^{1/2-3h}`}</InlineMath></span>
           </div>
         </div>
       </div>

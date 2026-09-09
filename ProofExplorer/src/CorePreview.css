@@ -136,7 +136,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-.core-preview-time code {
+.core-preview-time .tau-value {
   color: var(--mint);
   font-family: var(--font-mono);
   font-size: 15px;
@@ -164,7 +164,7 @@
   backdrop-filter: blur(8px);
 }
 
-.core-preview-readouts span {
+.core-preview-readouts > div > span:first-child {
   grid-column: 1 / -1;
   color: var(--ink-dim);
   font-size: 7px;
@@ -181,7 +181,7 @@
   font-variant-numeric: tabular-nums;
 }
 
-.core-preview-readouts code {
+.core-preview-readouts .scaling-law {
   align-self: center;
   color: var(--mint);
   font-family: var(--font-mono);
@@ -266,8 +266,9 @@
 
 .core-grid text {
   fill: var(--blue);
-  font-family: var(--font-mono);
+  font-family: KaTeX_Math, 'Times New Roman', serif;
   font-size: 12px;
+  font-style: italic;
 }
 
 .core-envelope {
@@ -396,7 +397,7 @@
     font-size: 14px;
   }
 
-  .core-preview-time code {
+  .core-preview-time .tau-value {
     font-size: 14px;
   }
 

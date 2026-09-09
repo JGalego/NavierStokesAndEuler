@@ -272,7 +272,7 @@
   line-height: 1.35;
 }
 
-.theorem-card > p span {
+.theorem-card > p > .inline-math {
   color: var(--mint);
 }
 
@@ -282,7 +282,7 @@
   flex-wrap: wrap;
 }
 
-.theorem-card-footer span {
+.theorem-card-footer > span {
   color: var(--ink-soft);
   font-family: var(--font-mono);
   font-size: 9px;
@@ -290,7 +290,7 @@
   background: rgba(255, 255, 255, 0.035);
 }
 
-.theorem-card-footer span {
+.theorem-card-footer > span {
   padding: 6px 8px;
   border-radius: 3px;
 }
