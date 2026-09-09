@@ -142,7 +142,7 @@ export default function ReferenceLibrary({ paperUrl }: { paperUrl: string }) {
       <header className="references-heading">
         <div>
           <span className="section-kicker">Sources and previous work</span>
-          <h2>The papers behind the construction</h2>
+          <h2>The work this proof builds on.</h2>
         </div>
         <p>The manuscript draws on regularity theory, weak-solution constructions, geometric optics, and recent work on singularity formation.</p>
       </header>
