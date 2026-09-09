@@ -22,7 +22,7 @@ import {
 } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import './App.css'
-import CoreExplorer, { CorePreview } from './CoreExplorer'
+import { CorePreview } from './CoreExplorer'
 import { lessonFor, proofStages, stageForStep } from './proofContent'
 import ReferenceLibrary from './ReferenceLibrary'
 import type { GoalSnapshot, Lens, ProofAction, ProofData, ProofStage } from './types'
@@ -355,7 +355,7 @@ function App() {
           <span>BLOW·UP <strong>LAB</strong></span>
         </a>
         <nav aria-label="Primary navigation">
-          <a href="#inner-core">Inner core</a>
+          <a href="#singularity">Singularity</a>
           <a href="#journey">Proof</a>
           <a href="#references">References</a>
         </nav>
@@ -365,42 +365,42 @@ function App() {
       </header>
 
       <main id="top">
-        <section className="hero-section">
-          <div className="hero-copy">
-            <h1>OpenAI’s Navier–Stokes blowup proof <em>meets Lean 4</em></h1>
-            <div className="hero-actions">
-              <a className="primary-action" href="#inner-core">Explore the flow <ArrowDown size={17} /></a>
-              <a className="secondary-action" href={paperUrl} target="_blank" rel="noreferrer">Read the paper <ExternalLink size={15} /></a>
-            </div>
-          </div>
-
-          <div className="hero-visual">
-            <CorePreview />
-            <div className="theorem-card">
-              <div className="theorem-card-top">
-                <span><Target size={15} /> Formal target</span>
-                <span className="verified"><CheckCircle2 size={14} /> checked</span>
-              </div>
-              <code>navier_stokes_breakdown_R3</code>
-              <p><span>∀</span> positive viscosity <strong>ν</strong>, there are smooth data for which no globally smooth finite-energy solution exists.</p>
-              <div className="theorem-card-footer">
-                <span>ℝ³</span>
-                <span>ν &gt; 0</span>
-                <span>finite-time blow-up</span>
+        <div className="hero-chapter">
+          <section className="hero-section">
+            <div className="hero-copy">
+              <h1>OpenAI’s Navier–Stokes blowup proof <em>meets Lean 4</em></h1>
+              <div className="hero-actions">
+                <a className="primary-action" href="#singularity">Explore the flow <ArrowDown size={17} /></a>
+                <a className="secondary-action" href={paperUrl} target="_blank" rel="noreferrer">Read the paper <ExternalLink size={15} /></a>
               </div>
             </div>
-          </div>
-        </section>
 
-        <section className="validation-ribbon" aria-label="Validation status">
-          <span className="ribbon-intro"><ShieldCheck size={18} /> Checked by</span>
-          <span>Lean kernel</span><i />
-          <span>Comparator</span><i />
-          <span>Nanoda</span><i />
-          <span>standard axioms only</span>
-        </section>
+            <div className="hero-visual" id="singularity">
+              <CorePreview />
+              <div className="theorem-card">
+                <div className="theorem-card-top">
+                  <span><Target size={15} /> Formal target</span>
+                  <span className="verified"><CheckCircle2 size={14} /> checked</span>
+                </div>
+                <code>navier_stokes_breakdown_R3</code>
+                <p><span>∀</span> positive viscosity <strong>ν</strong>, there are smooth data for which no globally smooth finite-energy solution exists.</p>
+                <div className="theorem-card-footer">
+                  <span>ℝ³</span>
+                  <span>ν &gt; 0</span>
+                  <span>finite-time blow-up</span>
+                </div>
+              </div>
+            </div>
+          </section>
 
-        <CoreExplorer paperUrl={paperUrl} />
+          <section className="validation-ribbon" aria-label="Validation status">
+            <span className="ribbon-intro"><ShieldCheck size={18} /> Checked by</span>
+            <span>Lean kernel</span><i />
+            <span>Comparator</span><i />
+            <span>Nanoda</span><i />
+            <span>standard axioms only</span>
+          </section>
+        </div>
 
         <section className="journey-section" id="journey">
           <div className="section-heading">

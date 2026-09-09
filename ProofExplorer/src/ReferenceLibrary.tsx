@@ -151,7 +151,7 @@ export default function ReferenceLibrary({ paperUrl }: { paperUrl: string }) {
         <div>
           <span>Primary source · 2026</span>
           <h3>Finite Time Blowup for Navier–Stokes</h3>
-          <p>The manuscript formalized by this repository. Figure 1 and the inner-core scaling laws above come from its physical description of the blowup.</p>
+          <p>The manuscript formalized by this repository, and the source of the inner-core geometry animated above.</p>
         </div>
         <div className="primary-reference-links">
           <a href={paperUrl} target="_blank" rel="noreferrer"><BookOpen size={16} /> Read the paper</a>

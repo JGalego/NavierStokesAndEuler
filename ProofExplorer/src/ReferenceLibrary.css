@@ -1,5 +1,6 @@
 .references-section {
   width: min(1280px, calc(100% - 48px));
+  min-height: 100svh;
   margin: 0 auto;
   padding: 110px 0 120px;
   border-top: 1px solid var(--line);

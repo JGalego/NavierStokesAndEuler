@@ -1,6 +1,6 @@
-import { ArrowDown, Pause, Play, RotateCcw } from 'lucide-react'
+import { Pause, Play } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
-import './CoreExplorer.css'
+import './CorePreview.css'
 
 type CoreFocus = 'flow' | 'scales' | 'energy'
 
@@ -9,24 +9,6 @@ interface CoreGeometryProps {
   focus: CoreFocus
   idPrefix: string
   compact?: boolean
-}
-
-const focusNotes: Record<CoreFocus, { label: string; title: string; body: string }> = {
-  flow: {
-    label: 'Velocity field',
-    title: 'In around the axis. Out along it.',
-    body: 'Fluid spirals toward the axis. Incompressibility sends it upward above the dividing layer and downward below it.',
-  },
-  scales: {
-    label: 'Similarity scales',
-    title: 'The radius collapses faster than the height.',
-    body: 'With τ = 1 − t, the radial scale is τ¹ᐟ² while the axial scale is τ¹ᐟ²⁻ʰ. The drawing exaggerates the growing slenderness.',
-  },
-  energy: {
-    label: 'Concentration',
-    title: 'Faster flow, less energy in the core.',
-    body: 'The characteristic angular and axial speeds diverge as τ⁻¹ᐟ²⁻ʰ, yet the shrinking core carries energy of order τ¹ᐟ²⁻³ʰ, which tends to zero.',
-  },
 }
 
 function pointPath(points: Array<[number, number]>) {
@@ -209,23 +191,10 @@ function CoreGeometry({ time, focus, idPrefix, compact = false }: CoreGeometryPr
 }
 
 export function CorePreview() {
-  return (
-    <a className="core-preview" href="#inner-core" aria-label="Explore the inner-core flow from Figure 1">
-      <CoreGeometry time={0.76} focus="flow" compact idPrefix="hero-core" />
-      <span>Figure 1</span>
-      <strong>Enter the inner core</strong>
-      <ArrowDown size={17} />
-    </a>
-  )
-}
-
-export default function CoreExplorer({ paperUrl }: { paperUrl: string }) {
-  const [time, setTime] = useState(0.18)
-  const [focus, setFocus] = useState<CoreFocus>('flow')
+  const [time, setTime] = useState(0.28)
   const [playing, setPlaying] = useState(false)
   const isPlaying = playing && time < 0.985
   const tau = Math.max(0.015, 1 - time)
-  const note = focusNotes[focus]
 
   useEffect(() => {
     if (!isPlaying) return
@@ -235,109 +204,49 @@ export default function CoreExplorer({ paperUrl }: { paperUrl: string }) {
     return () => window.clearInterval(timer)
   }, [isPlaying])
 
-  const chooseTime = (nextTime: number) => {
-    setPlaying(false)
-    setTime(nextTime)
-  }
-
-  const reset = () => {
-    setPlaying(false)
-    setTime(0.18)
-  }
-
   return (
-    <section className="core-section" id="inner-core">
-      <header className="core-section-heading">
-        <div>
-          <h2>Watch the singularity take shape.</h2>
-        </div>
-        <p>As time approaches 1, the core contracts while its angular and axial speeds diverge.</p>
+    <section className="core-preview" aria-labelledby="hero-core-title">
+      <header className="core-preview-heading">
+        <h2 id="hero-core-title">Watch the singularity take shape.</h2>
+        <p>The core contracts as its angular and axial speeds diverge.</p>
       </header>
 
-      <div className="core-lab">
-        <aside className="core-controls">
-          <div className="core-focus-tabs" aria-label="Choose an aspect of the inner core">
-            {([
-              ['flow', 'Flow'],
-              ['scales', 'Scales'],
-              ['energy', 'Energy'],
-            ] as const).map(([value, label]) => (
-              <button
-                type="button"
-                key={value}
-                className={focus === value ? 'active' : ''}
-                onClick={() => setFocus(value)}
-                aria-pressed={focus === value}
-              >
-                {label}
-              </button>
-            ))}
-          </div>
-
-          <div className="core-note" aria-live="polite">
-            <span>{note.label}</span>
-            <h3>{note.title}</h3>
-            <p>{note.body}</p>
-          </div>
-
-          <div className="core-equations" aria-label="Scaling laws">
-            <div><span>radius</span><strong>ℓ<sub>r</sub> ≍ τ<sup>1/2</sup></strong></div>
-            <div><span>height</span><strong>ℓ<sub>z</sub> ≍ τ<sup>1/2−h</sup></strong></div>
-            <div><span>speed</span><strong>|u<sub>θ</sub>|, |u<sub>z</sub>| ≍ τ<sup>−1/2−h</sup></strong></div>
-            <div><span>core energy</span><strong>≍ τ<sup>1/2−3h</sup> → 0</strong></div>
-            <p className="core-parameter">0 &lt; h &lt; 1/100</p>
-          </div>
-        </aside>
-
-        <figure className="core-canvas">
-          <div className="core-time-status">
-            <span>time</span>
-            <strong>t = {time.toFixed(3)}</strong>
-            <code>τ = 1 − t = {tau.toFixed(3)}</code>
-          </div>
-          <CoreGeometry time={time} focus={focus} idPrefix="lab-core" />
-          <figcaption>
-            Interactive reconstruction of Figure 1. The difference between radial and axial scales is exaggerated, as it is in the paper.
-            {' '}<a href={`${paperUrl}#page=4`} target="_blank" rel="noreferrer">Open the original <ArrowDown size={13} /></a>
-          </figcaption>
-        </figure>
+      <div className="core-preview-visual">
+        <CoreGeometry time={time} focus="flow" compact idPrefix="hero-core" />
+        <div className="core-preview-time" aria-live="polite">
+          <strong>t = {time.toFixed(3)}</strong>
+          <code>τ = {tau.toFixed(3)}</code>
+        </div>
       </div>
 
-      <div className="core-timeline">
-        <div className="core-playback">
-          <button
-            type="button"
-            onClick={() => {
-              if (time >= 0.985) setTime(0.18)
-              setPlaying((current) => !current || time >= 0.985)
-            }}
-            aria-label={isPlaying ? 'Pause time animation' : 'Play time animation'}
-          >
-            {isPlaying ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" />}
-            {isPlaying ? 'Pause' : 'Approach t = 1'}
-          </button>
-          <button type="button" className="core-reset" onClick={reset} aria-label="Reset inner-core time">
-            <RotateCcw size={16} /> Reset
-          </button>
-        </div>
-        <label htmlFor="core-time">
+      <div className="core-preview-controls">
+        <button
+          type="button"
+          onClick={() => {
+            if (time >= 0.985) setTime(0.28)
+            setPlaying((current) => !current || time >= 0.985)
+          }}
+          aria-label={isPlaying ? 'Pause singularity animation' : 'Play singularity animation'}
+        >
+          {isPlaying ? <Pause size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
+          <span>{isPlaying ? 'Pause' : 'Approach t = 1'}</span>
+        </button>
+        <label htmlFor="hero-core-time">
           <span className="sr-only">Time before singularity</span>
           <input
-            id="core-time"
+            id="hero-core-time"
             type="range"
             min="0.05"
             max="0.985"
             step="0.005"
             value={time}
-            onChange={(event) => chooseTime(Number(event.target.value))}
+            onChange={(event) => {
+              setPlaying(false)
+              setTime(Number(event.target.value))
+            }}
             style={{ background: `linear-gradient(90deg, var(--mint) ${((time - 0.05) / 0.935) * 100}%, rgba(183, 231, 221, 0.15) 0)` }}
           />
         </label>
-        <div className="core-presets" aria-label="Time presets">
-          <button type="button" className={time < 0.4 ? 'active' : ''} onClick={() => chooseTime(0.18)}>earlier</button>
-          <button type="button" className={time >= 0.4 && time < 0.85 ? 'active' : ''} onClick={() => chooseTime(0.65)}>later</button>
-          <button type="button" className={time >= 0.85 ? 'active' : ''} onClick={() => chooseTime(0.965)}>near t = 1</button>
-        </div>
       </div>
     </section>
   )
