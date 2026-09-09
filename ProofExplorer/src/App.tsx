@@ -403,12 +403,8 @@ function App() {
       <main id="top">
         <section className="hero-section">
           <div className="hero-copy">
-            <div className="eyebrow"><span /> Navier–Stokes in Lean 4</div>
-            <h1>The breakdown proof, with every <em>Lean goal</em> left in view.</h1>
-            <p className="hero-lead">
-              The argument starts with a compactly supported solution and ends in a contradiction at time one.
-              Read the mathematics, inspect the proof state, or keep both on screen.
-            </p>
+            <div className="eyebrow"><span /> Clay problem · alternative C</div>
+            <h1>Breakdown of Navier–Stokes solutions on ℝ³, <em>checked in Lean 4.</em></h1>
             <div className="hero-actions">
               <a className="primary-action" href="#journey">Read the argument <ArrowDown size={17} /></a>
               <a className="secondary-action" href={sourceUrl} target="_blank" rel="noreferrer">Open the source <ExternalLink size={15} /></a>

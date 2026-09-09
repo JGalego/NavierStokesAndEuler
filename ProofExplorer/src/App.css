@@ -169,14 +169,6 @@
   font-weight: 500;
 }
 
-.hero-lead {
-  max-width: 600px;
-  margin: 28px 0 0;
-  color: var(--ink-soft);
-  font-size: 17px;
-  line-height: 1.75;
-}
-
 .hero-actions {
   display: flex;
   gap: 12px;
@@ -1551,7 +1543,6 @@ footer > p { margin: 0; }
 
   .hero-copy { padding: 74px 0 10px; }
   .hero-copy h1 { font-size: clamp(48px, 13vw, 72px); }
-  .hero-lead { font-size: 15px; }
   .hero-visual { min-height: 500px; }
   .flow-field { width: 100%; }
   .theorem-card { right: 8%; width: 78%; }
