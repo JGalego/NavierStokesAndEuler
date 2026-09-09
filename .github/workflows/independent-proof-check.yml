@@ -1,0 +1,118 @@
+name: Independent proof checking
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: independent-proof-check-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  comparator:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 360
+
+    steps:
+      - name: Check out formalization
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+
+      - name: Check out landrun
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: Zouuup/landrun
+          ref: 811cfff51ceaf3d9843708aa6d22e9b84ccac8b4
+          path: .ci-tools/landrun
+
+      - name: Check out lean4export
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: leanprover/lean4export
+          ref: 411dce7db58a3afc60ecab2d211acd1042b593dc
+          path: .ci-tools/lean4export
+
+      - name: Check out Nanoda
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          repository: ammkrn/nanoda_lib
+          ref: 05055695879dfebb6628a67da88ceca6cd6b0421
+          path: .ci-tools/nanoda
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5
+        with:
+          go-version: 1.24.0
+          cache: false
+
+      - name: Set up Rust
+        run: |
+          rustup toolchain install 1.94.0 --profile minimal
+          rustup default 1.94.0
+
+      - name: Set up Lean
+        uses: leanprover/lean-action@50fcf42d2e460296f1a34b402e990d1b24f8b596 # v1.6.0
+        with:
+          auto-config: false
+          use-github-cache: false
+          use-mathlib-cache: false
+
+      - name: Build and install pinned checkers
+        run: |
+          pushd .ci-tools/landrun
+          go build -trimpath -o "$RUNNER_TEMP/landrun" ./cmd/landrun
+          popd
+
+          pushd .ci-tools/nanoda
+          cargo build --release --locked
+          popd
+
+          pushd .ci-tools/lean4export
+          lake build
+          popd
+
+          sudo install -m 0755 "$RUNNER_TEMP/landrun" /usr/local/bin/landrun
+          sudo install -m 0755 \
+            .ci-tools/lean4export/.lake/build/bin/lean4export \
+            /usr/local/bin/lean4export
+          sudo install -m 0755 \
+            .ci-tools/nanoda/target/release/nanoda_bin \
+            /usr/local/bin/nanoda_bin
+
+          sha256sum \
+            /usr/local/bin/landrun \
+            /usr/local/bin/lean4export \
+            /usr/local/bin/nanoda_bin
+          rm -rf .ci-tools
+
+      - name: Fetch Mathlib cache
+        run: lake exe cache get
+
+      - name: Verify fresh solution state
+        run: |
+          test ! -e .lake/build/lib/lean/NavierStokes/ComparatorSolution.olean
+          test ! -e .lake/build/lib/lean/Euler/Solution.olean
+
+      - name: Run Comparator, Nanoda, and Lean
+        run: |
+          lake_bin="$(command -v lake)"
+
+          run_comparator() {
+            local config="$1"
+            local log="$2"
+
+            sudo systemd-run --wait --pipe --quiet \
+              --uid="$(id -u)" --gid="$(id -g)" \
+              --property=RestrictAddressFamilies=~AF_UNIX \
+              --setenv="HOME=$HOME" --setenv="PATH=$PATH" \
+              --working-directory="$GITHUB_WORKSPACE" -- \
+              "$lake_bin" exe comparator "$config" | tee "$log"
+
+            grep -Fxq 'nanoda kernel accepts the solution' "$log"
+            grep -Fxq 'Lean default kernel accepts the solution' "$log"
+            grep -Fxq 'Your solution is okay!' "$log"
+          }
+
+          run_comparator ComparatorChallenges/NavierStokes.json navier-stokes-comparator.log
+          run_comparator ComparatorChallenges/Euler.json euler-comparator.log

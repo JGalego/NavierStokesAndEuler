@@ -22,8 +22,11 @@ initial velocity is imposed separately. This avoids differentiating an arbitrary
 extension to negative time at the boundary. `∞` in the `ContDiff` scope means
 every finite differentiability order.
 
-`breakdownStatement` is the full proposition to prove. Introducing it does not
-assert that it has a proof or supply a witness.
+`breakdownStatement` is a stronger, directly bundled whole-space proposition.
+It is defined here but is not currently exported as a proved theorem. The exact
+Comparator alternative (C) is proved separately as
+`NavierStokes.Comparator.navier_stokes_breakdown_R3`; this module does not
+identify that result with the stronger package below.
 -/
 
 
@@ -143,10 +146,10 @@ def candidateStatement (ν : ℝ) : Prop :=
 def coreBreakdownStatement : Prop :=
   ∀ ν : ℝ, 0 < ν → candidateStatement ν
 
-/-- The full assertion of Theorem 1.1: at every positive viscosity there is a
-candidate whose same prescribed force and zero datum have no global smooth
-solution with uniformly bounded kinetic energy. This is a target proposition,
-not an asserted theorem. -/
+/-- The stronger directly bundled assertion of Theorem 1.1: at every positive
+viscosity there is a candidate whose same prescribed force and zero datum have
+no global smooth solution with uniformly bounded kinetic energy. This definition
+is not currently inhabited by a theorem in this development. -/
 def breakdownStatement : Prop :=
   ∀ ν : ℝ, 0 < ν →
     ∃ u : VelocityField, ∃ p : PressureField, ∃ f : VelocityField, ∃ K : Set Space,
