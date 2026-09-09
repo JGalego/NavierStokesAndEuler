@@ -29,11 +29,11 @@ const repositoryUrl = 'https://github.com/JGalego/NavierStokesAndEuler'
 const sourceUrl = `${repositoryUrl}/blob/feat/proof-animation/NavierStokes/ComparatorProofAnimation.lean`
 
 const stageBeats: Record<string, string[]> = {
-  candidate: ['construct u, p, f', 'certify singular behavior', 'keep the package opaque'],
-  'admissible-data': ['compact support', 'smooth rescaling', 'Comparator decay'],
-  normalization: ['assume global v, q', 'scale by ν⁻¹', 'obtain viscosity one'],
-  comparison: ['choose t < 1', 'assemble slab hypotheses', 'prepare uniqueness'],
-  contradiction: ['identify u = v₁', 'global smoothness clashes', 'close False'],
+  candidate: ['choose u, p, and f', 'record the PDE and support', 'record failure of global agreement'],
+  'admissible-data': ['start from compact support', 'rescale f by ν²', 'prove Comparator decay'],
+  normalization: ['suppose v and q exist', 'rescale by ν⁻¹', 'build a viscosity-one solution'],
+  comparison: ['fix 0 ≤ t < 1', 'restrict to [0,t]', 'invoke uniqueness'],
+  contradiction: ['deduce u = v₁', 'use global smoothness', 'contradict the candidate theorem'],
 }
 
 function initialStepFromHash() {
@@ -83,8 +83,8 @@ function StageRail({ activeStage, onSelect }: { activeStage: ProofStage; onSelec
   return (
     <aside className="stage-rail" aria-label="Proof stages">
       <div className="rail-heading">
-        <span className="section-kicker">Proof route</span>
-        <span className="rail-count">5 stages</span>
+        <span className="section-kicker">Proof outline</span>
+        <span className="rail-count">5 parts</span>
       </div>
       <div className="stage-list">
         {proofStages.map((stage) => {
@@ -110,7 +110,7 @@ function StageRail({ activeStage, onSelect }: { activeStage: ProofStage; onSelec
       </div>
       <div className="rail-note">
         <Waves size={18} />
-        <p>The full construction stays available beneath each named theorem—without flattening it into a graph hairball.</p>
+        <p>The construction spans many named theorems. This page follows the final argument without drawing the entire dependency graph.</p>
       </div>
     </aside>
   )
@@ -122,9 +122,9 @@ function StoryPanel({ stage }: { stage: ProofStage }) {
       <div className="story-copy">
         <div className="story-label"><BookOpen size={16} /> Mathematical argument</div>
         <p className="story-lead">{stage.story}</p>
-        <p className="bridge-note"><span>Formal bridge</span>{stage.bridge}</p>
+        <p className="bridge-note"><span>In Lean</span>{stage.bridge}</p>
       </div>
-      <div className="concept-flow" aria-label={`Conceptual flow for ${stage.title}`}>
+      <div className="concept-flow" aria-label={`Outline for ${stage.title}`}>
         {stageBeats[stage.id].map((beat, index) => (
           <div className="concept-beat" key={beat}>
             <span>{index + 1}</span>
@@ -134,7 +134,7 @@ function StoryPanel({ stage }: { stage: ProofStage }) {
         ))}
       </div>
       <details className="checkpoint">
-        <summary><CircleHelp size={17} /> Check your intuition</summary>
+        <summary><CircleHelp size={17} /> Pause and check</summary>
         <p className="checkpoint-question">{stage.question}</p>
         <p className="checkpoint-answer"><Lightbulb size={16} /> {stage.answer}</p>
       </details>
@@ -294,7 +294,7 @@ function ProofWorkbench({
         <button type="button" className="icon-button" onClick={onNext} disabled={action.index === total - 1} aria-label="Next proof move">
           <ArrowRight size={18} />
         </button>
-        <div className="keyboard-hint"><kbd>←</kbd><kbd>→</kbd><span>navigate</span></div>
+        <div className="keyboard-hint"><kbd>←</kbd><kbd>→</kbd><span>move</span></div>
       </div>
     </div>
   )
@@ -304,8 +304,8 @@ function LoadingWorkbench({ error }: { error?: string }) {
   return (
     <div className="workbench loading-workbench" role={error ? 'alert' : 'status'}>
       <Waves className="loading-wave" size={30} />
-      <strong>{error ? 'The proof data could not be loaded.' : 'Loading 46 certified proof moves…'}</strong>
-      <p>{error ?? 'Preparing goals, tactics, and transitions.'}</p>
+      <strong>{error ? 'The proof data could not be loaded.' : 'Loading 46 proof steps…'}</strong>
+      <p>{error ?? 'Reading tactics and goal states.'}</p>
     </div>
   )
 }
@@ -391,9 +391,9 @@ function App() {
           <span>BLOW·UP <strong>LAB</strong></span>
         </a>
         <nav aria-label="Primary navigation">
-          <a href="#journey">Journey</a>
-          <a href="#lean-replay">Lean replay</a>
-          <a href="#verification">Verification</a>
+          <a href="#journey">Argument</a>
+          <a href="#lean-replay">Lean proof</a>
+          <a href="#verification">Checks</a>
         </nav>
         <a className="github-link" href={repositoryUrl} target="_blank" rel="noreferrer">
           <GitFork size={17} /> <span>Repository</span>
@@ -403,20 +403,19 @@ function App() {
       <main id="top">
         <section className="hero-section">
           <div className="hero-copy">
-            <div className="eyebrow"><span /> A machine-checked PDE expedition</div>
-            <h1>Follow a smooth flow toward a <em>formal contradiction.</em></h1>
+            <div className="eyebrow"><span /> A PDE proof checked in Lean 4</div>
+            <h1>A Navier–Stokes blow-up proof, down to the <em>Lean goals.</em></h1>
             <p className="hero-lead">
-              Explore the whole-space Navier–Stokes breakdown argument at two scales:
-              the mathematics that drives it and the Lean 4 moves that certify it.
+              Five sections place the whole-space PDE argument beside the tactics and goal states checked by Lean 4.
             </p>
             <div className="hero-actions">
-              <a className="primary-action" href="#journey">Begin the proof <ArrowDown size={17} /></a>
-              <a className="secondary-action" href={sourceUrl} target="_blank" rel="noreferrer">Read exact source <ExternalLink size={15} /></a>
+              <a className="primary-action" href="#journey">Start reading <ArrowDown size={17} /></a>
+              <a className="secondary-action" href={sourceUrl} target="_blank" rel="noreferrer">Open the Lean source <ExternalLink size={15} /></a>
             </div>
             <div className="hero-metrics" aria-label="Proof summary">
-              <div><strong>46</strong><span>Lean moves</span></div>
-              <div><strong>5</strong><span>argument stages</span></div>
-              <div><strong>0</strong><span>unproved goals</span></div>
+              <div><strong>46</strong><span>tactics</span></div>
+              <div><strong>5</strong><span>parts</span></div>
+              <div><strong>0</strong><span>open goals</span></div>
             </div>
           </div>
 
@@ -441,7 +440,7 @@ function App() {
         </section>
 
         <section className="validation-ribbon" aria-label="Validation status">
-          <span className="ribbon-intro"><ShieldCheck size={18} /> Mechanically validated</span>
+          <span className="ribbon-intro"><ShieldCheck size={18} /> Checked with</span>
           <span>Lean kernel</span><i />
           <span>Comparator</span><i />
           <span>Nanoda</span><i />
@@ -451,14 +450,14 @@ function App() {
         <section className="journey-section" id="journey">
           <div className="section-heading">
             <div>
-              <span className="section-kicker">The guided journey</span>
-              <h2>One argument. Two synchronized lenses.</h2>
-              <p>Move from mathematical intent to exact proof state without losing the thread.</p>
+              <span className="section-kicker">The proof</span>
+              <h2>Read the argument beside the Lean state.</h2>
+              <p>The mathematics and Lean views can be read separately or side by side.</p>
             </div>
-            <div className="lens-switcher" aria-label="Explorer lens">
+            <div className="lens-switcher" aria-label="Reading mode">
               {([
-                ['story', BookOpen, 'Story'],
-                ['both', Sparkles, 'Both'],
+                ['story', BookOpen, 'Mathematics'],
+                ['both', Sparkles, 'Together'],
                 ['lean', Code2, 'Lean'],
               ] as const).map(([value, Icon, label]) => (
                 <button type="button" key={value} className={lens === value ? 'active' : ''} onClick={() => setLens(value)} aria-pressed={lens === value}>
@@ -491,8 +490,8 @@ function App() {
                 <section className="replay-section">
                   <div className="replay-heading">
                     <div>
-                      <span className="section-kicker">Executable explanation</span>
-                      <h2>Watch the goal change</h2>
+                      <span className="section-kicker">Lean replay</span>
+                      <h2>How each tactic changes the goal</h2>
                     </div>
                     <a href={sourceUrl} target="_blank" rel="noreferrer">source <ExternalLink size={14} /></a>
                   </div>
@@ -530,7 +529,7 @@ function App() {
               )}
 
               <div className="stage-concepts">
-                <span>Concepts in this stage</span>
+                <span>Used here</span>
                 {activeStage.concepts.map((concept) => <span className="tag" key={concept}>{concept}</span>)}
                 {activeStage.leanFocus.map((concept) => <span className="tag lean-tag" key={concept}>{concept}</span>)}
               </div>
@@ -540,29 +539,29 @@ function App() {
 
         <section className="verification-section" id="verification">
           <div className="verification-heading">
-            <span className="section-kicker">What “checked” means</span>
-            <h2>Trust, with the boundary drawn clearly.</h2>
+            <span className="section-kicker">Verification</span>
+            <h2>What the checks establish</h2>
           </div>
           <div className="verification-grid">
             <article>
               <span className="verification-icon"><CheckCircle2 size={21} /></span>
               <h3>Lean kernel</h3>
-              <p>The exact declaration type-checks with no <code>sorry</code> and depends only on <code>propext</code>, <code>Classical.choice</code>, and <code>Quot.sound</code>.</p>
+              <p><code>navier_stokes_breakdown_R3</code> type-checks with no <code>sorry</code>. Its only axioms are <code>propext</code>, <code>Classical.choice</code>, and <code>Quot.sound</code>.</p>
             </article>
             <article>
               <span className="verification-icon"><Braces size={21} /></span>
               <h3>Comparator</h3>
-              <p>An independently built challenge module confirms that the exported result matches the intended formal statement.</p>
+              <p>A separately compiled challenge module checks that the exported theorem has the formal statement expected by Comparator.</p>
             </article>
             <article>
               <span className="verification-icon"><ShieldCheck size={21} /></span>
               <h3>Independent kernel</h3>
-              <p>Nanoda accepts the exported proof term, providing a second implementation of kernel checking.</p>
+              <p>Nanoda also accepts the exported proof term. Its checker is independent of Lean’s kernel implementation.</p>
             </article>
             <article className="boundary-card">
               <span className="verification-icon"><CircleHelp size={21} /></span>
-              <h3>The human boundary</h3>
-              <p>Mechanical checking does not replace independent review of the PDE mathematics or its alignment with the source argument.</p>
+              <h3>Scope of the checks</h3>
+              <p>The checks certify the formal proof. Whether the definitions and hypotheses faithfully express the intended PDE theorem still requires mathematical review.</p>
             </article>
           </div>
           <a className="text-link" href={`${repositoryUrl}#validation-status`} target="_blank" rel="noreferrer">
@@ -573,7 +572,7 @@ function App() {
 
       <footer>
         <div className="footer-brand"><span className="brand-mark"><Waves size={18} /></span><strong>Blow-Up Lab</strong></div>
-        <p>A guided reader for the Navier–Stokes and Euler formalizations.</p>
+        <p>Reading the Navier–Stokes and Euler formalizations.</p>
         <div className="footer-links">
           <a href={repositoryUrl} target="_blank" rel="noreferrer"><GitFork size={15} /> Source</a>
           <a href={sourceUrl} target="_blank" rel="noreferrer"><Code2 size={15} /> Animated theorem</a>

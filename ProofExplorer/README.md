@@ -1,8 +1,7 @@
 # Blow-Up Lab
 
-An educational, static proof explorer for the whole-space Navier–Stokes result in
-this repository. It presents the mathematical argument and the corresponding Lean
-4 proof-state transitions as synchronized views.
+A static reader for the whole-space Navier–Stokes result in this repository. The
+mathematical argument appears beside the corresponding Lean 4 proof states.
 
 ## Development
 
@@ -11,8 +10,8 @@ npm install
 npm run dev
 ```
 
-Use the Story, Both, and Lean controls to change the level of detail. In the Lean
-replay, use the arrow keys to move between tactics and Space to toggle playback.
+The Mathematics, Together, and Lean controls select the reading mode. The
+arrow keys move between tactics; Space starts or pauses playback.
 
 ## Proof data
 
@@ -24,8 +23,8 @@ extracting the animation data:
 npm run data:proof -- ../ProofAnimation/build/navier-stokes-proof.json
 ```
 
-The extraction script intentionally removes animation highlighting maps and keeps
-only the theorem name, tactic text, and before/after goals required by the site.
+The extraction script drops the animation highlighting maps. It retains the
+theorem name, tactic text, and before/after goals used by the site.
 
 ## Validation
 

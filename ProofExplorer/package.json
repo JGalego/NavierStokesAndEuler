@@ -2,7 +2,7 @@
   "name": "proof-explorer",
   "private": true,
   "version": "0.1.0",
-  "description": "A guided mathematical and Lean 4 explorer for the Navier–Stokes breakdown proof.",
+  "description": "The Navier–Stokes breakdown proof presented with its mathematics and Lean 4 proof states.",
   "type": "module",
   "scripts": {
     "dev": "vite",
