@@ -24,9 +24,9 @@ scene.
 ## Prerequisites
 
 - Lean and Lake from the repository's `lean-toolchain`
-- Pygments 2.19 or newer, with the `lean4` lexer
+- Pygments 2.19 or newer, with the `lean4` lexer, and Pillow 11
 - Blender 4.x for scene and video rendering
-- FFmpeg support in Blender
+- FFmpeg support in Blender and the `ffmpeg` command-line tool
 
 Install the Python requirement in the environment of your choice:
 
@@ -76,3 +76,18 @@ timing can be adjusted with `ACTION_FRAME_COUNT`, `WAIT_FRAME_COUNT`,
 
 The first extraction can take several minutes because Lean must load the full
 formalization environment before collecting the theorem's tactic information.
+
+## YouTube thumbnail
+
+After rendering the video, generate the thumbnail from a representative proof
+state at 30 seconds:
+
+```sh
+python3 ProofAnimation/create_thumbnail.py
+```
+
+This writes a lossless master and a compact upload-ready copy to
+`ProofAnimation/assets/navier-stokes-youtube-thumbnail.png` and
+`ProofAnimation/assets/navier-stokes-youtube-thumbnail.jpg`. Use `--timestamp`
+to select another source frame, or `--video` and `--output` to override the
+input and output paths.
