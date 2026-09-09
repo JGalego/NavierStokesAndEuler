@@ -405,7 +405,6 @@ function App() {
         <section className="journey-section" id="journey">
           <div className="section-heading">
             <div>
-              <span className="section-kicker">Read the proof</span>
               <h2>See the proof unfold in Lean.</h2>
               <p>Follow the singular candidate through scaling and uniqueness to the final <code>exact</code>.</p>
             </div>
@@ -494,7 +493,6 @@ function App() {
 
         <section className="verification-section" id="verification">
           <div className="verification-heading">
-            <span className="section-kicker">Proof checks</span>
             <h2>See what the checkers certify.</h2>
           </div>
           <div className="verification-grid">

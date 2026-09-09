@@ -141,7 +141,6 @@ export default function ReferenceLibrary({ paperUrl }: { paperUrl: string }) {
     <section className="references-section" id="references">
       <header className="references-heading">
         <div>
-          <span className="section-kicker">Sources and previous work</span>
           <h2>Trace the proof to its sources.</h2>
         </div>
         <p>The manuscript draws on regularity theory, weak-solution constructions, geometric optics, and recent work on singularity formation.</p>

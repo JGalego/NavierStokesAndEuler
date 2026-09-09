@@ -249,7 +249,6 @@ export default function CoreExplorer({ paperUrl }: { paperUrl: string }) {
     <section className="core-section" id="inner-core">
       <header className="core-section-heading">
         <div>
-          <span className="section-kicker">Figure 1 · physical picture</span>
           <h2>Watch the singularity take shape.</h2>
         </div>
         <p>As time approaches 1, the core contracts while its angular and axial speeds diverge.</p>
