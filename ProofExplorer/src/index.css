@@ -1,0 +1,107 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap');
+
+:root {
+  --ink: #eef6f5;
+  --ink-soft: #a9bab8;
+  --ink-dim: #758784;
+  --night: #071210;
+  --night-raised: #0b1917;
+  --night-soft: #10211e;
+  --line: rgba(183, 231, 221, 0.14);
+  --line-strong: rgba(183, 231, 221, 0.25);
+  --mint: #80ead2;
+  --mint-bright: #b4ffed;
+  --blue: #7daeff;
+  --violet: #b99aff;
+  --amber: #ffc979;
+  --coral: #ff917c;
+  --font-sans: 'Manrope', system-ui, sans-serif;
+  --font-display: 'Newsreader', Georgia, serif;
+  --font-mono: 'DM Mono', 'SFMono-Regular', Consolas, monospace;
+  color: var(--ink);
+  background: var(--night);
+  font-family: var(--font-sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 88px;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 83% 4%, rgba(74, 171, 154, 0.12), transparent 27rem),
+    radial-gradient(circle at 8% 43%, rgba(75, 115, 182, 0.08), transparent 31rem),
+    var(--night);
+}
+
+body::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  content: '';
+  pointer-events: none;
+  opacity: 0.2;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.16'/%3E%3C/svg%3E");
+}
+
+button,
+a {
+  font: inherit;
+}
+
+button {
+  color: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+summary,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+summary:focus-visible {
+  outline: 2px solid var(--mint);
+  outline-offset: 4px;
+}
+
+::selection {
+  color: #06110f;
+  background: var(--mint);
+}
+
+#root {
+  min-height: 100vh;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

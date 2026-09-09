@@ -1,0 +1,548 @@
+{
+  "schemaVersion": 1,
+  "theoremName": "NavierStokes.ProofAnimation.navier_stokes_breakdown_R3_full",
+  "sourcePath": "NavierStokes/ComparatorProofAnimation.lean",
+  "startGoal": {
+    "state": "ν : ℝ\nhν : ν > 0\n⊢ ∃ u₀ f,\n    Comparator.InitialVelocityConditionDecay u₀ ∧\n      Comparator.ForceConditionDecay f ∧\n        ¬∃ v p, Comparator.NavierStokesExistenceAndSmoothnessRn ν u₀ f v p",
+    "goalId": "_uniq.11301"
+  },
+  "actions": [
+    {
+      "index": 0,
+      "tacticText": "obtain ⟨u, p, f, h⟩ := R3CompactCandidate.selected_compact_candidate",
+      "startState": "ν : ℝ\nhν : ν > 0\n⊢ ∃ u₀ f,\n    Comparator.InitialVelocityConditionDecay u₀ ∧\n      Comparator.ForceConditionDecay f ∧\n        ¬∃ v p, Comparator.NavierStokesExistenceAndSmoothnessRn ν u₀ f v p",
+      "startGoalId": "_uniq.11301",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\n⊢ ∃ u₀ f,\n    Comparator.InitialVelocityConditionDecay u₀ ∧\n      Comparator.ForceConditionDecay f ∧\n        ¬∃ v p, Comparator.NavierStokesExistenceAndSmoothnessRn ν u₀ f v p",
+          "goalId": "_uniq.11402"
+        }
+      ]
+    },
+    {
+      "index": 1,
+      "tacticText": "obtain ⟨Kf, hKf, hfs⟩ := h.force_support",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\n⊢ ∃ u₀ f,\n    Comparator.InitialVelocityConditionDecay u₀ ∧\n      Comparator.ForceConditionDecay f ∧\n        ¬∃ v p, Comparator.NavierStokesExistenceAndSmoothnessRn ν u₀ f v p",
+      "startGoalId": "_uniq.11402",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\n⊢ ∃ u₀ f,\n    Comparator.InitialVelocityConditionDecay u₀ ∧\n      Comparator.ForceConditionDecay f ∧\n        ¬∃ v p, Comparator.NavierStokesExistenceAndSmoothnessRn ν u₀ f v p",
+          "goalId": "_uniq.11473"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "tacticText": "have hForceDecay := CompactSpatialForceDecay.forceConditionDecay hKf\n  (rescale_smooth h.force_smooth (ν ^ 2) hν.le)\n  (CompactSpatialForceDecay.rescale_supported hfs (ν ^ 2) hν.le)\n  (rescale_support h.force_time_support (ν ^ 2) hν)",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\n⊢ ∃ u₀ f,\n    Comparator.InitialVelocityConditionDecay u₀ ∧\n      Comparator.ForceConditionDecay f ∧\n        ¬∃ v p, Comparator.NavierStokesExistenceAndSmoothnessRn ν u₀ f v p",
+      "startGoalId": "_uniq.11473",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\n⊢ ∃ u₀ f,\n    Comparator.InitialVelocityConditionDecay u₀ ∧\n      Comparator.ForceConditionDecay f ∧\n        ¬∃ v p, Comparator.NavierStokesExistenceAndSmoothnessRn ν u₀ f v p",
+          "goalId": "_uniq.12045"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "tacticText": "refine ⟨fun _ => 0, toComparator (rescaledForce ν f),\n  zero_initial_condition_decay, hForceDecay, ?_⟩",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\n⊢ ∃ u₀ f,\n    Comparator.InitialVelocityConditionDecay u₀ ∧\n      Comparator.ForceConditionDecay f ∧\n        ¬∃ v p, Comparator.NavierStokesExistenceAndSmoothnessRn ν u₀ f v p",
+      "startGoalId": "_uniq.12045",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\n⊢ ¬∃ v p,\n      Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n        (toComparator (rescaledForce ν f)) v p",
+          "goalId": "_uniq.12825"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "tacticText": "rintro ⟨v, q, hv⟩",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\n⊢ ¬∃ v p,\n      Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n        (toComparator (rescaledForce ν f)) v p",
+      "startGoalId": "_uniq.12825",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\n⊢ False",
+          "goalId": "_uniq.12865"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "tacticText": "let v₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\n⊢ False",
+      "startGoalId": "_uniq.12865",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\n⊢ False",
+          "goalId": "_uniq.13678"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "tacticText": "let q₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\n⊢ False",
+      "startGoalId": "_uniq.13678",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\n⊢ False",
+          "goalId": "_uniq.14393"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "tacticText": "have hGlobal : GlobalSolutionRn f v₁ q₁ := ?_",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\n⊢ False",
+      "startGoalId": "_uniq.14393",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\n⊢ GlobalSolutionRn f v₁ q₁",
+          "goalId": "_uniq.14506"
+        },
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\n⊢ False",
+          "goalId": "_uniq.14508"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "tacticText": "have hc : 0 < ν⁻¹ := inv_pos.mpr hν",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\n⊢ GlobalSolutionRn f v₁ q₁",
+      "startGoalId": "_uniq.14506",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\n⊢ GlobalSolutionRn f v₁ q₁",
+          "goalId": "_uniq.15038"
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "tacticText": "have hsv := fromComparator_smooth hv.velocity_smooth",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\n⊢ GlobalSolutionRn f v₁ q₁",
+      "startGoalId": "_uniq.15038",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\n⊢ GlobalSolutionRn f v₁ q₁",
+          "goalId": "_uniq.15533"
+        }
+      ]
+    },
+    {
+      "index": 10,
+      "tacticText": "have hsp := fromComparator_smooth hv.pressure_smooth",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\n⊢ GlobalSolutionRn f v₁ q₁",
+      "startGoalId": "_uniq.15533",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ GlobalSolutionRn f v₁ q₁",
+          "goalId": "_uniq.15894"
+        }
+      ]
+    },
+    {
+      "index": 11,
+      "tacticText": "refine ⟨rescale_smooth hsv _ hc.le, rescale_smooth hsp _ hc.le, ?_, ?_, ?_, ?_, ?_⟩",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ GlobalSolutionRn f v₁ q₁",
+      "startGoalId": "_uniq.15894",
+      "nextGoals": [
+        {
+          "state": "case refine_1\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ ∀ (x : Space), v₁ (0, x) = 0",
+          "goalId": "_uniq.16034"
+        },
+        {
+          "state": "case refine_2\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ ∀ (t : ℝ), 0 ≤ t → ∀ (x : Space), spatialDivergence v₁ t x = 0",
+          "goalId": "_uniq.16035"
+        },
+        {
+          "state": "case refine_3\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ ∀ (t : ℝ), 0 < t → ∀ (x : Space), navierStokesResidual v₁ q₁ t x = f (t, x)",
+          "goalId": "_uniq.16036"
+        },
+        {
+          "state": "case refine_4\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ ∀ (t : ℝ), 0 ≤ t → MemLp (fun x => ‖v₁ (t, x)‖) 2 volume",
+          "goalId": "_uniq.16037"
+        },
+        {
+          "state": "case refine_5\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ ∃ E, ∀ (t : ℝ), 0 ≤ t → ∫ (x : Space), ‖v₁ (t, x)‖ ^ 2 < E",
+          "goalId": "_uniq.16038"
+        }
+      ]
+    },
+    {
+      "index": 12,
+      "tacticText": "intro x",
+      "startState": "case refine_1\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ ∀ (x : Space), v₁ (0, x) = 0",
+      "startGoalId": "_uniq.16034",
+      "nextGoals": [
+        {
+          "state": "case refine_1\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nx : Space\n⊢ v₁ (0, x) = 0",
+          "goalId": "_uniq.16040"
+        }
+      ]
+    },
+    {
+      "index": 13,
+      "tacticText": "simp [v₁, rescale, fromComparator, hv.initial_condition]",
+      "startState": "case refine_1\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nx : Space\n⊢ v₁ (0, x) = 0",
+      "startGoalId": "_uniq.16040",
+      "nextGoals": []
+    },
+    {
+      "index": 14,
+      "tacticText": "intro t ht x\nsimp only [v₁]\nrw [rescale_divergence, divergence_eq]\nchange ν⁻¹ * Comparator.divergence (v · (ν⁻¹ * t)) x = 0\nrw [hv.div_free x (ν⁻¹ * t) (mul_nonneg hc.le ht), mul_zero]",
+      "startState": "case refine_2\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ ∀ (t : ℝ), 0 ≤ t → ∀ (x : Space), spatialDivergence v₁ t x = 0",
+      "startGoalId": "_uniq.16035",
+      "nextGoals": []
+    },
+    {
+      "index": 15,
+      "tacticText": "intro t ht x\nsimp only [v₁, q₁]\nrw [navierStokesResidual, rescale_temporalDerivative _ _ _ _ _\n  (differentiable_time_slice hsv (mul_pos hc ht) x),\n  rescale_advection, rescale_laplacian, rescale_gradient]\nhave he := congrArg (fun z : Space => ν⁻¹ ^ 2 • z)\n  (comparator_equation_Rn hv (mul_pos hc ht) x)\nhave hcoef : ν⁻¹ ^ 2 * ν = ν⁻¹ := by\n  field_simp\nhave hforce : ν⁻¹ ^ 2 • toComparator (rescaledForce ν f) x (ν⁻¹ * t) = f (t, x) := by\n  simp [toComparator, rescaledForce, rescale, smul_smul, hν.ne']\nrw [hforce] at he\nsimp only [smul_add, smul_sub, smul_smul] at he\nrw [hcoef] at he\nsimpa only [pow_two] using he",
+      "startState": "case refine_3\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ ∀ (t : ℝ), 0 < t → ∀ (x : Space), navierStokesResidual v₁ q₁ t x = f (t, x)",
+      "startGoalId": "_uniq.16036",
+      "nextGoals": []
+    },
+    {
+      "index": 16,
+      "tacticText": "intro t ht",
+      "startState": "case refine_4\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ ∀ (t : ℝ), 0 ≤ t → MemLp (fun x => ‖v₁ (t, x)‖) 2 volume",
+      "startGoalId": "_uniq.16037",
+      "nextGoals": [
+        {
+          "state": "case refine_4\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nt : ℝ\nht : 0 ≤ t\n⊢ MemLp (fun x => ‖v₁ (t, x)‖) 2 volume",
+          "goalId": "_uniq.23666"
+        }
+      ]
+    },
+    {
+      "index": 17,
+      "tacticText": "simpa only [v₁, rescale, fromComparator, norm_smul] using\n  (hv.integrable (ν⁻¹ * t) (mul_nonneg hc.le ht)).const_mul ‖ν⁻¹‖",
+      "startState": "case refine_4\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nt : ℝ\nht : 0 ≤ t\n⊢ MemLp (fun x => ‖v₁ (t, x)‖) 2 volume",
+      "startGoalId": "_uniq.23666",
+      "nextGoals": []
+    },
+    {
+      "index": 18,
+      "tacticText": "obtain ⟨E, hE⟩ := hv.globally_bounded_energy",
+      "startState": "case refine_5\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\n⊢ ∃ E, ∀ (t : ℝ), 0 ≤ t → ∫ (x : Space), ‖v₁ (t, x)‖ ^ 2 < E",
+      "startGoalId": "_uniq.16038",
+      "nextGoals": [
+        {
+          "state": "case refine_5\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nE : ℝ\nhE : ∀ t ≥ 0, ∫ (x : ℝ³), ‖v x t‖ ^ 2 < E\n⊢ ∃ E, ∀ (t : ℝ), 0 ≤ t → ∫ (x : Space), ‖v₁ (t, x)‖ ^ 2 < E",
+          "goalId": "_uniq.24784"
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "tacticText": "refine ⟨ν⁻¹ ^ 2 * E, ?_⟩",
+      "startState": "case refine_5\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nE : ℝ\nhE : ∀ t ≥ 0, ∫ (x : ℝ³), ‖v x t‖ ^ 2 < E\n⊢ ∃ E, ∀ (t : ℝ), 0 ≤ t → ∫ (x : Space), ‖v₁ (t, x)‖ ^ 2 < E",
+      "startGoalId": "_uniq.24784",
+      "nextGoals": [
+        {
+          "state": "case refine_5\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nE : ℝ\nhE : ∀ t ≥ 0, ∫ (x : ℝ³), ‖v x t‖ ^ 2 < E\n⊢ ∀ (t : ℝ), 0 ≤ t → ∫ (x : Space), ‖v₁ (t, x)‖ ^ 2 < ν⁻¹ ^ 2 * E",
+          "goalId": "_uniq.24902"
+        }
+      ]
+    },
+    {
+      "index": 20,
+      "tacticText": "intro t ht",
+      "startState": "case refine_5\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nE : ℝ\nhE : ∀ t ≥ 0, ∫ (x : ℝ³), ‖v x t‖ ^ 2 < E\n⊢ ∀ (t : ℝ), 0 ≤ t → ∫ (x : Space), ‖v₁ (t, x)‖ ^ 2 < ν⁻¹ ^ 2 * E",
+      "startGoalId": "_uniq.24902",
+      "nextGoals": [
+        {
+          "state": "case refine_5\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nE : ℝ\nhE : ∀ t ≥ 0, ∫ (x : ℝ³), ‖v x t‖ ^ 2 < E\nt : ℝ\nht : 0 ≤ t\n⊢ ∫ (x : Space), ‖v₁ (t, x)‖ ^ 2 < ν⁻¹ ^ 2 * E",
+          "goalId": "_uniq.25049"
+        }
+      ]
+    },
+    {
+      "index": 21,
+      "tacticText": "simp only [v₁, rescale, fromComparator, norm_smul, Real.norm_eq_abs,\n  abs_of_pos hc, mul_pow, integral_const_mul]",
+      "startState": "case refine_5\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nE : ℝ\nhE : ∀ t ≥ 0, ∫ (x : ℝ³), ‖v x t‖ ^ 2 < E\nt : ℝ\nht : 0 ≤ t\n⊢ ∫ (x : Space), ‖v₁ (t, x)‖ ^ 2 < ν⁻¹ ^ 2 * E",
+      "startGoalId": "_uniq.25049",
+      "nextGoals": [
+        {
+          "state": "case refine_5\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nE : ℝ\nhE : ∀ t ≥ 0, ∫ (x : ℝ³), ‖v x t‖ ^ 2 < E\nt : ℝ\nht : 0 ≤ t\n⊢ ν⁻¹ ^ 2 * ∫ (a : Space), ‖v a (ν⁻¹ * t)‖ ^ 2 < ν⁻¹ ^ 2 * E",
+          "goalId": "_uniq.25717"
+        }
+      ]
+    },
+    {
+      "index": 22,
+      "tacticText": "exact mul_lt_mul_of_pos_left (hE (ν⁻¹ * t) (mul_nonneg hc.le ht))\n  (sq_pos_of_pos hc)",
+      "startState": "case refine_5\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhc : 0 < ν⁻¹\nhsv : ContDiffOn ℝ ∞ (fromComparator v) futureDomain\nhsp : ContDiffOn ℝ ∞ (fromComparator q) futureDomain\nE : ℝ\nhE : ∀ t ≥ 0, ∫ (x : ℝ³), ‖v x t‖ ^ 2 < E\nt : ℝ\nht : 0 ≤ t\n⊢ ν⁻¹ ^ 2 * ∫ (a : Space), ‖v a (ν⁻¹ * t)‖ ^ 2 < ν⁻¹ ^ 2 * E",
+      "startGoalId": "_uniq.25717",
+      "nextGoals": []
+    },
+    {
+      "index": 23,
+      "tacticText": "apply h.not_global_agreement hGlobal.velocity_smooth",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\n⊢ False",
+      "startGoalId": "_uniq.14508",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := ⋯\nq₁ : PressureField := ⋯\nhGlobal : GlobalSolutionRn f v₁ q₁\n⊢ ∀ t ∈ Ico 0 1, ∀ (x : Space), u (t, x) = v₁ (t, x)",
+          "goalId": "_uniq.27365"
+        }
+      ]
+    },
+    {
+      "index": 24,
+      "tacticText": "obtain ⟨K, hK, hs⟩ := h.velocity_support",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := ⋯\nq₁ : PressureField := ⋯\nhGlobal : GlobalSolutionRn f v₁ q₁\n⊢ ∀ t ∈ Ico 0 1, ∀ (x : Space), u (t, x) = v₁ (t, x)",
+      "startGoalId": "_uniq.27365",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\n⊢ ∀ t ∈ Ico 0 1, ∀ (x : Space), u (t, x) = v₁ (t, x)",
+          "goalId": "_uniq.27433"
+        }
+      ]
+    },
+    {
+      "index": 25,
+      "tacticText": "intro t ht x",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\n⊢ ∀ t ∈ Ico 0 1, ∀ (x : Space), u (t, x) = v₁ (t, x)",
+      "startGoalId": "_uniq.27433",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\n⊢ u (t, x) = v₁ (t, x)",
+          "goalId": "_uniq.27442"
+        }
+      ]
+    },
+    {
+      "index": 26,
+      "tacticText": "by_cases ht0 : t = 0",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\n⊢ u (t, x) = v₁ (t, x)",
+      "startGoalId": "_uniq.27442",
+      "nextGoals": [
+        {
+          "state": "case pos\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : t = 0\n⊢ u (t, x) = v₁ (t, x)",
+          "goalId": "_uniq.27510"
+        },
+        {
+          "state": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\n⊢ u (t, x) = v₁ (t, x)",
+          "goalId": "_uniq.27517"
+        }
+      ]
+    },
+    {
+      "index": 27,
+      "tacticText": "subst t",
+      "startState": "case pos\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : t = 0\n⊢ u (t, x) = v₁ (t, x)",
+      "startGoalId": "_uniq.27510",
+      "nextGoals": [
+        {
+          "state": "case pos\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nx : Space\nht : 0 ∈ Ico 0 1\n⊢ u (0, x) = v₁ (0, x)",
+          "goalId": "_uniq.27532"
+        }
+      ]
+    },
+    {
+      "index": 28,
+      "tacticText": "rw [h.zero_initial_velocity, hGlobal.initial_velocity]",
+      "startState": "case pos\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nx : Space\nht : 0 ∈ Ico 0 1\n⊢ u (0, x) = v₁ (0, x)",
+      "startGoalId": "_uniq.27532",
+      "nextGoals": []
+    },
+    {
+      "index": 29,
+      "tacticText": "have hpos : 0 < t := lt_of_le_of_ne ht.1 (Ne.symm ht0)",
+      "startState": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\n⊢ u (t, x) = v₁ (t, x)",
+      "startGoalId": "_uniq.27517",
+      "nextGoals": [
+        {
+          "state": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\n⊢ u (t, x) = v₁ (t, x)",
+          "goalId": "_uniq.28056"
+        }
+      ]
+    },
+    {
+      "index": 30,
+      "tacticText": "have hpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain := ?_",
+      "startState": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\n⊢ u (t, x) = v₁ (t, x)",
+      "startGoalId": "_uniq.28056",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\n⊢ NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain",
+          "goalId": "_uniq.28078"
+        },
+        {
+          "state": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\n⊢ u (t, x) = v₁ (t, x)",
+          "goalId": "_uniq.28080"
+        }
+      ]
+    },
+    {
+      "index": 31,
+      "tacticText": "intro z hz",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\n⊢ NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain",
+      "startGoalId": "_uniq.28078",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nz : NavierStokesR3.ProblemStatement.SpaceTime\nhz : z ∈ NavierStokesR3.Comparison.slab 0 t\n⊢ z ∈ preSingularDomain",
+          "goalId": "_uniq.28087"
+        }
+      ]
+    },
+    {
+      "index": 32,
+      "tacticText": "exact ⟨⟨hz.1.1, hz.1.2.trans_lt ht.2⟩, hz.2⟩",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nz : NavierStokesR3.ProblemStatement.SpaceTime\nhz : z ∈ NavierStokesR3.Comparison.slab 0 t\n⊢ z ∈ preSingularDomain",
+      "startGoalId": "_uniq.28087",
+      "nextGoals": []
+    },
+    {
+      "index": 33,
+      "tacticText": "have hfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain := ?_",
+      "startState": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\n⊢ u (t, x) = v₁ (t, x)",
+      "startGoalId": "_uniq.28080",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\n⊢ NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain",
+          "goalId": "_uniq.28141"
+        },
+        {
+          "state": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\n⊢ u (t, x) = v₁ (t, x)",
+          "goalId": "_uniq.28143"
+        }
+      ]
+    },
+    {
+      "index": 34,
+      "tacticText": "intro z hz",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\n⊢ NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain",
+      "startGoalId": "_uniq.28141",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nz : NavierStokesR3.ProblemStatement.SpaceTime\nhz : z ∈ NavierStokesR3.Comparison.slab 0 t\n⊢ z ∈ futureDomain",
+          "goalId": "_uniq.28150"
+        }
+      ]
+    },
+    {
+      "index": 35,
+      "tacticText": "exact ⟨hz.1.1, hz.2⟩",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nz : NavierStokesR3.ProblemStatement.SpaceTime\nhz : z ∈ NavierStokesR3.Comparison.slab 0 t\n⊢ z ∈ futureDomain",
+      "startGoalId": "_uniq.28150",
+      "nextGoals": []
+    },
+    {
+      "index": 36,
+      "tacticText": "have hsupport : ∀ r ∈ Icc (0 : ℝ) t, tsupport (fun y => u (r, y)) ⊆ K := ?_",
+      "startState": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\n⊢ u (t, x) = v₁ (t, x)",
+      "startGoalId": "_uniq.28143",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\n⊢ ∀ r ∈ Icc 0 t, (tsupport fun y => u (r, y)) ⊆ K",
+          "goalId": "_uniq.29610"
+        },
+        {
+          "state": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nhsupport : ∀ r ∈ Icc 0 t, (tsupport fun y => u (r, y)) ⊆ K\n⊢ u (t, x) = v₁ (t, x)",
+          "goalId": "_uniq.29614"
+        }
+      ]
+    },
+    {
+      "index": 37,
+      "tacticText": "intro r hr",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\n⊢ ∀ r ∈ Icc 0 t, (tsupport fun y => u (r, y)) ⊆ K",
+      "startGoalId": "_uniq.29610",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nr : ℝ\nhr : r ∈ Icc 0 t\n⊢ (tsupport fun y => u (r, y)) ⊆ K",
+          "goalId": "_uniq.29623"
+        }
+      ]
+    },
+    {
+      "index": 38,
+      "tacticText": "apply closure_minimal _ hK.isClosed",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nr : ℝ\nhr : r ∈ Icc 0 t\n⊢ (tsupport fun y => u (r, y)) ⊆ K",
+      "startGoalId": "_uniq.29623",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := ⋯\nq₁ : PressureField := ⋯\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nr : ℝ\nhr : r ∈ Icc 0 t\n⊢ (Function.support fun y => u (r, y)) ⊆ K",
+          "goalId": "_uniq.29630"
+        }
+      ]
+    },
+    {
+      "index": 39,
+      "tacticText": "intro y hy",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := ⋯\nq₁ : PressureField := ⋯\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nr : ℝ\nhr : r ∈ Icc 0 t\n⊢ (Function.support fun y => u (r, y)) ⊆ K",
+      "startGoalId": "_uniq.29630",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nr : ℝ\nhr : r ∈ Icc 0 t\ny : Space\nhy : y ∈ Function.support fun y => u (r, y)\n⊢ y ∈ K",
+          "goalId": "_uniq.31497"
+        }
+      ]
+    },
+    {
+      "index": 40,
+      "tacticText": "by_contra hyK",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nr : ℝ\nhr : r ∈ Icc 0 t\ny : Space\nhy : y ∈ Function.support fun y => u (r, y)\n⊢ y ∈ K",
+      "startGoalId": "_uniq.31497",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nr : ℝ\nhr : r ∈ Icc 0 t\ny : Space\nhy : y ∈ Function.support fun y => u (r, y)\nhyK : y ∉ K\n⊢ False",
+          "goalId": "_uniq.32267"
+        }
+      ]
+    },
+    {
+      "index": 41,
+      "tacticText": "exact hy (hs r ⟨hr.1, hr.2.trans_lt ht.2⟩ y hyK)",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nr : ℝ\nhr : r ∈ Icc 0 t\ny : Space\nhy : y ∈ Function.support fun y => u (r, y)\nhyK : y ∉ K\n⊢ False",
+      "startGoalId": "_uniq.32267",
+      "nextGoals": []
+    },
+    {
+      "index": 42,
+      "tacticText": "have hEnergy := hGlobal.uniformFiniteEnergy t",
+      "startState": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nhsupport : ∀ r ∈ Icc 0 t, (tsupport fun y => u (r, y)) ⊆ K\n⊢ u (t, x) = v₁ (t, x)",
+      "startGoalId": "_uniq.29614",
+      "nextGoals": [
+        {
+          "state": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nhsupport : ∀ r ∈ Icc 0 t, (tsupport fun y => u (r, y)) ⊆ K\nhEnergy : NavierStokesR3.ProblemStatement.UniformFiniteEnergy (Icc 0 t) v₁\n⊢ u (t, x) = v₁ (t, x)",
+          "goalId": "_uniq.32311"
+        }
+      ]
+    },
+    {
+      "index": 43,
+      "tacticText": "have heq := NavierStokesR3.WholeSpaceUniqueness.classical_uniqueness_on_Icc hpos\n  (h.velocity_smooth.mono hpre) (hGlobal.velocity_smooth.mono hfuture)\n  (h.pressure_smooth.mono hpre) (hGlobal.pressure_smooth.mono hfuture)\n  hK hsupport hEnergy\n  (fun r hr => h.divergence_free r ⟨hr.1.le, hr.2.trans ht.2⟩)\n  (fun r hr => hGlobal.divergence_free r hr.1.le)\n  (fun r hr y => ?_)\n  (fun y => (h.zero_initial_velocity y).trans (hGlobal.initial_velocity y).symm)",
+      "startState": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nhsupport : ∀ r ∈ Icc 0 t, (tsupport fun y => u (r, y)) ⊆ K\nhEnergy : NavierStokesR3.ProblemStatement.UniformFiniteEnergy (Icc 0 t) v₁\n⊢ u (t, x) = v₁ (t, x)",
+      "startGoalId": "_uniq.32311",
+      "nextGoals": [
+        {
+          "state": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nhsupport : ∀ r ∈ Icc 0 t, (tsupport fun y => u (r, y)) ⊆ K\nhEnergy : NavierStokesR3.ProblemStatement.UniformFiniteEnergy (Icc 0 t) v₁\nr : ℝ\nhr : r ∈ Ioo 0 t\ny : NavierStokesR3.ProblemStatement.Space\n⊢ NavierStokesR3.ProblemStatement.navierStokesResidual 1 u p r y =\n    NavierStokesR3.ProblemStatement.navierStokesResidual 1 v₁ q₁ r y",
+          "goalId": "_uniq.32895"
+        },
+        {
+          "state": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nhsupport : ∀ r ∈ Icc 0 t, (tsupport fun y => u (r, y)) ⊆ K\nhEnergy : NavierStokesR3.ProblemStatement.UniformFiniteEnergy (Icc 0 t) v₁\nheq : ∀ t_1 ∈ Icc 0 t, ∀ (x : Space), u (t_1, x) = v₁ (t_1, x)\n⊢ u (t, x) = v₁ (t, x)",
+          "goalId": "_uniq.32943"
+        }
+      ]
+    },
+    {
+      "index": 44,
+      "tacticText": "simpa only [NavierStokesR3.ProblemStatement.navierStokesResidual,\n  navierStokesResidual, one_smul] using\n  (h.navier_stokes r ⟨hr.1, hr.2.trans ht.2⟩ y).trans\n    (hGlobal.navier_stokes r hr.1 y).symm",
+      "startState": "ν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nhsupport : ∀ r ∈ Icc 0 t, (tsupport fun y => u (r, y)) ⊆ K\nhEnergy : NavierStokesR3.ProblemStatement.UniformFiniteEnergy (Icc 0 t) v₁\nr : ℝ\nhr : r ∈ Ioo 0 t\ny : NavierStokesR3.ProblemStatement.Space\n⊢ NavierStokesR3.ProblemStatement.navierStokesResidual 1 u p r y =\n    NavierStokesR3.ProblemStatement.navierStokesResidual 1 v₁ q₁ r y",
+      "startGoalId": "_uniq.32895",
+      "nextGoals": []
+    },
+    {
+      "index": 45,
+      "tacticText": "exact heq t ⟨ht.1, le_rfl⟩ x",
+      "startState": "case neg\nν : ℝ\nhν : ν > 0\nu : VelocityField\np : PressureField\nf : VelocityField\nh : R3CompactCandidate.Properties u p f\nKf : Set Space\nhKf : IsCompact Kf\nhfs : CompactSpatialForceDecay.SupportedIn Kf f\nhForceDecay :\n  Comparator.ForceConditionDecay (toComparator (rescale (ν ^ 2) ν f))\nv : ℝ³ → ℝ → ℝ³\nq : ℝ³ → ℝ → ℝ\nhv :\n  Comparator.NavierStokesExistenceAndSmoothnessRn ν (fun x => 0)\n    (toComparator (rescaledForce ν f)) v q\nv₁ : VelocityField := rescale ν⁻¹ ν⁻¹ (fromComparator v)\nq₁ : PressureField := rescale (ν⁻¹ ^ 2) ν⁻¹ (fromComparator q)\nhGlobal : GlobalSolutionRn f v₁ q₁\nK : Set Space\nhK : IsCompact K\nhs : ∀ t ∈ Ico 0 1, ∀ x ∉ K, u (t, x) = 0\nt : ℝ\nht : t ∈ Ico 0 1\nx : Space\nht0 : ¬t = 0\nhpos : 0 < t\nhpre : NavierStokesR3.Comparison.slab 0 t ⊆ preSingularDomain\nhfuture : NavierStokesR3.Comparison.slab 0 t ⊆ futureDomain\nhsupport : ∀ r ∈ Icc 0 t, (tsupport fun y => u (r, y)) ⊆ K\nhEnergy : NavierStokesR3.ProblemStatement.UniformFiniteEnergy (Icc 0 t) v₁\nheq : ∀ t_1 ∈ Icc 0 t, ∀ (x : Space), u (t_1, x) = v₁ (t_1, x)\n⊢ u (t, x) = v₁ (t, x)",
+      "startGoalId": "_uniq.32943",
+      "nextGoals": []
+    }
+  ]
+}
