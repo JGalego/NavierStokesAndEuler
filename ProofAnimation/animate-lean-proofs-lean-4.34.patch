@@ -1,0 +1,207 @@
+diff --git a/Animate.lean b/Animate.lean
+index 7d9f3c3..f41f538 100644
+--- a/Animate.lean
++++ b/Animate.lean
+@@ -204,7 +204,7 @@ def left_trim_lines (lines : String) (col : Nat) : String := Id.run do
+   for line in lines do
+     let pfx := Substring.Raw.mk line ⟨0⟩ ⟨col⟩
+     if pfx.toString = String.replicate col ' '
+-    then rev_result := line.drop col :: rev_result
++    then rev_result := (line.drop col).toString :: rev_result
+     else rev_result := line :: rev_result
+   return String.intercalate "\n" rev_result.reverse
+ 
+@@ -439,7 +439,19 @@ partial def stage2 (step : TacticStep) : IO Stage2State := do
+   let ⟨_, m⟩ := StateT.run (stage2_aux step) default
+   let [top_goal] := step.goals_before |
+          throw <| IO.userError "got more than one toplevel step"
++  let mut m := m
++  let mut goals := [top_goal]
++  for ⟨_, tracedStep⟩ in m.toList do
++    goals := tracedStep.goals_after ++ goals
++  for goal in goals do
++    if !m.contains goal.goalId then
++      m := m.insert goal.goalId {
++        text := "exact (elaborated proof term)"
++        span := EMPTY_SPAN
++        goal_before := goal
++        goals_after := []
++      }
+   return { startGoal := top_goal, steps := m }
+ 
+ 
+ def stage3_inner (config : Config) (step : TacticStep') : GoalAction := Id.run do
+@@ -462,5 +474,5 @@ partial def stage3 (config : Config) (state2 : Stage2State) : IO Movie := do
+   let mut rev_actions := []
+-  let mut visited := Batteries.mkRBSet String Ord.compare
++  let mut visited : Std.HashSet String := {}
+   let mut colorings := #[]
+   let mut currentGoals := [state2.startGoal.goalId]
+   while currentGoals.length > 0 do
+diff --git a/HighlightSyntax.lean b/HighlightSyntax.lean
+index 4a07015..68e57c0 100644
+--- a/HighlightSyntax.lean
++++ b/HighlightSyntax.lean
+@@ -105,7 +105,7 @@ def assign_colors (s : String) : IO ColorMap := do
+     if line = "" then continue
+     let [cat, val] := line.splitToList (· = '\t') |
+       throw (IO.userError s!"bad pygmentize output: {line}")
+-    let val' := (val.drop 1).dropRight 1 ++ "\""
++    let val' := ((val.drop 1).dropEnd 1).toString ++ "\""
+     match Std.Internal.Parsec.String.Parser.run Parse.str val' with
+     | .ok v =>
+       for _c in v.toList do
+diff --git a/animate_proof.py b/animate_proof.py
+index 38f122e..1430712 100644
+--- a/animate_proof.py
++++ b/animate_proof.py
+@@ -46,4 +46,4 @@
+ #MONOFONTPATH = str(FONTDIR / "DejaVuSansMono.ttf")
+ # JuliaMono one looks better for chess
+-MONOFONTPATH = str(FONTDIR / "JuliaMono-Regular.ttf")
++MONOFONTPATH = str((FONTDIR / "JuliaMono-Regular.ttf").resolve())
+ 
+@@ -90,7 +90,9 @@
+ 
+-    def keyframe_insert(self, frame):
+-        if self.obj:
+-            self.obj.keyframe_insert(data_path="location", index=-1, frame=frame)
+-            self.obj.keyframe_insert(data_path="scale", index=-1, frame=frame)
+-            self.obj.data.materials[0].keyframe_insert(data_path="diffuse_color", index=-1, frame=frame)
++    def keyframe_insert(self, frame):
++        if self.obj:
++            self.obj.keyframe_insert(data_path="location", index=-1, frame=frame)
++            self.obj.keyframe_insert(data_path="scale", index=-1, frame=frame)
++            self.obj.data.materials[0].keyframe_insert(data_path="diffuse_color", index=-1, frame=frame)
++            self.obj.hide_render = all(value == 0 for value in self.obj.scale)
++            self.obj.keyframe_insert(data_path="hide_render", frame=frame)
+ 
+@@ -210,16 +210,16 @@
+ 
+-    def new_char_obj(self, c, scale = 1.0, parent=None):
+-        if c.isspace():
+-            cobj = None
+-        else:
+-            bpy.ops.object.text_add()
+-            cobj = bpy.context.object
+-            cmaterial = bpy.data.materials.new(name="CharMaterial")
+-            cmaterial.diffuse_color = (1, 1, 1, 1)
+-            cobj.data.materials.append(cmaterial)
+-            cobj.data.body = c
+-            cobj.data.font = MONOFONT
+-            bpy.ops.object.convert(target='MESH')
+-            cobj.parent = parent
+-            cobj.scale=(scale,scale,scale)
++    def new_char_obj(self, c, scale = 1.0, parent=None):
++        if c.isspace():
++            cobj = None
++        else:
++            font_curve = bpy.data.curves.new(name="Char", type='FONT')
++            font_curve.body = c
++            font_curve.font = MONOFONT
++            cobj = bpy.data.objects.new(name="Char", object_data=font_curve)
++            bpy.context.scene.collection.objects.link(cobj)
++            cmaterial = bpy.data.materials.new(name="CharMaterial")
++            cmaterial.diffuse_color = (1, 1, 1, 1)
++            font_curve.materials.append(cmaterial)
++            cobj.parent = parent
++            cobj.scale=(scale,scale,scale)
+ 
+@@ -293,8 +295,10 @@
+ 
+-        self.lay_out(gs)
+-        for obj in gs.new_objs:
+-            if obj.obj:
+-                obj.obj.scale = (0,0,0)
+-                obj.keyframe_insert(gs.start_frame)
+-                obj.obj.scale = (1,1,1)
++        self.lay_out(gs)
++        for obj in gs.new_objs:
++            if obj.obj:
++                obj.obj.scale = (0,0,0)
++                obj.keyframe_insert(gs.start_frame)
++                obj.obj.hide_render = False
++                obj.obj.keyframe_insert(data_path="hide_render", frame=gs.start_frame + 1)
++                obj.obj.scale = (1,1,1)
+ 
+@@ -755,6 +755,12 @@ parser.add_argument("--switch_focus_frame_count", type=int, default=30,
+                     help="how many frames to use to switch focus")
+ parser.add_argument("--foreground_ratio_y", type=float, default=0.3,
+                     help="fraction of vertical space taken up by the tactic top panel")
++parser.add_argument("--output",
++                    help="render the animation to this movie file")
++parser.add_argument("--render", action="store_true",
++                    help="render in addition to constructing the Blender scene")
++parser.add_argument("--save-blend",
++                    help="save the constructed scene to this .blend file")
+ 
+ script_args = []
+ found_double_dash = False
+@@ -778,7 +784,27 @@ world.init(movie_json)
+ 
+ world.current_frame = 0
+-for area in bpy.context.screen.areas:
+-    if area.type == 'VIEW_3D':
+-        for space in area.spaces:
+-            if space.type == 'VIEW_3D':
+-                space.shading.type = 'RENDERED'
++if bpy.context.screen is not None:
++    for area in bpy.context.screen.areas:
++        if area.type == 'VIEW_3D':
++            for space in area.spaces:
++                if space.type == 'VIEW_3D':
++                    space.shading.type = 'RENDERED'
++
++if args.render:
++    if not args.output:
++        parser.error("--render requires --output")
++    output_path = Path(args.output).resolve()
++    output_path.parent.mkdir(parents=True, exist_ok=True)
++    bpy.context.scene.render.filepath = str(output_path)
++    bpy.context.scene.render.image_settings.file_format = 'FFMPEG'
++    bpy.context.scene.render.ffmpeg.format = 'MPEG4'
++    bpy.context.scene.render.ffmpeg.codec = 'H264'
++
++if args.save_blend:
++    blend_path = Path(args.save_blend).resolve()
++    blend_path.parent.mkdir(parents=True, exist_ok=True)
++    bpy.ops.file.pack_all()
++    bpy.ops.wm.save_as_mainfile(filepath=str(blend_path))
++
++if args.render:
++    bpy.ops.render.render(animation=True)
+diff --git a/common.py b/common.py
+index b42927a..ef21b3a 100644
+--- a/common.py
++++ b/common.py
+@@ -10,7 +10,10 @@ def envDefault(envVar, defaultVal, k = None):
+     return k(envVal) if envVal else defaultVal
+ 
+ def set_camera_view():
+-    for area in bpy.context.screen.areas:
++    screen = bpy.context.screen
++    if screen is None:
++        return
++    for area in screen.areas:
+         if area.type == 'VIEW_3D':
+             area.spaces[0].region_3d.view_perspective = 'CAMERA'
+             break
+diff --git a/lakefile.lean b/lakefile.lean
+index e1f88f5..0b65e75 100644
+--- a/lakefile.lean
++++ b/lakefile.lean
+@@ -27,4 +27,4 @@ lean_exe «Animate» where
+   -- Remove this line if you do not need such functionality.
+   supportInterpreter := true
+ 
+-require mathlib from git "https://github.com/leanprover-community/mathlib4" @ "v4.26.0"
++require mathlib from "../packages/mathlib"
+diff --git a/lean-toolchain b/lean-toolchain
+index 4271930..a4ebfc6 100644
+--- a/lean-toolchain
++++ b/lean-toolchain
+@@ -1 +1 @@
+-leanprover/lean4:v4.26.0
+\ No newline at end of file
++leanprover/lean4:v4.34.0-rc2
+\ No newline at end of file

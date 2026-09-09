@@ -36,6 +36,18 @@ lake exe cache get
 lake build
 ```
 
+## Proof animation
+
+An `animate-lean-proofs` visualization of the full whole-space theorem argument
+can be generated with:
+
+```sh
+ProofAnimation/render.sh render
+```
+
+See [ProofAnimation/README.md](ProofAnimation/README.md) for prerequisites,
+output files, and rendering options.
+
 ## Independent proof checking
 
 For instructions on checking the formalizations with Comparator, see the
