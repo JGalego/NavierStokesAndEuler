@@ -495,7 +495,7 @@ function App() {
         <section className="verification-section" id="verification">
           <div className="verification-heading">
             <span className="section-kicker">Proof checks</span>
-            <h2>What has actually been checked</h2>
+            <h2>See what the checkers certify.</h2>
           </div>
           <div className="verification-grid">
             <article>
