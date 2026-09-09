@@ -16,28 +16,79 @@
 
 .core-preview-heading {
   position: relative;
-  z-index: 2;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(150px, 0.72fr);
-  gap: 20px;
-  align-items: end;
-  padding: 18px 20px 0;
+  z-index: 5;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px 3px;
 }
 
 .core-preview-heading h2 {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 0.22em;
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(22px, 2.25vw, 31px);
+  font-size: 29px;
   font-weight: 500;
-  line-height: 1.02;
+  line-height: 1.06;
   letter-spacing: -0.025em;
 }
 
-.core-preview-heading p {
-  margin: 0 0 2px;
+.core-preview-heading h2 span {
+  white-space: nowrap;
+}
+
+.core-preview-info {
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.core-preview-info > button {
+  display: grid;
+  width: 31px;
+  height: 31px;
+  padding: 0;
+  place-items: center;
   color: var(--ink-soft);
-  font-size: 9px;
-  line-height: 1.5;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  background: rgba(6, 17, 15, 0.68);
+  cursor: help;
+}
+
+.core-preview-info > button:hover,
+.core-preview-info > button:focus-visible {
+  color: var(--mint);
+  border-color: rgba(128, 234, 210, 0.46);
+}
+
+.core-preview-info > p {
+  position: absolute;
+  z-index: 12;
+  top: 38px;
+  right: 0;
+  width: min(320px, 70vw);
+  margin: 0;
+  padding: 12px 13px;
+  color: var(--ink-soft);
+  font-size: 10px;
+  line-height: 1.65;
+  pointer-events: none;
+  border: 1px solid var(--line-strong);
+  border-radius: 5px;
+  background: rgba(6, 17, 15, 0.96);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.38);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+.core-preview-info:hover > p,
+.core-preview-info:focus-within > p {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .core-preview-visual {
@@ -69,8 +120,9 @@
   right: 15px;
   display: flex;
   align-items: baseline;
-  gap: 8px;
-  padding: 7px 9px;
+  gap: 11px;
+  min-width: 156px;
+  padding: 9px 12px;
   border: 1px solid var(--line);
   border-radius: 4px;
   background: rgba(6, 17, 15, 0.72);
@@ -78,22 +130,69 @@
 }
 
 .core-preview-time strong {
-  font-family: var(--font-display);
-  font-size: 14px;
-  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: 15px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
 }
 
 .core-preview-time code {
   color: var(--mint);
   font-family: var(--font-mono);
-  font-size: 8px;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+}
+
+.core-preview-readouts {
+  position: absolute;
+  z-index: 2;
+  bottom: 14px;
+  left: 15px;
+  display: flex;
+  gap: 7px;
+}
+
+.core-preview-readouts > div {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 3px 11px;
+  min-width: 136px;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: rgba(6, 17, 15, 0.76);
+  backdrop-filter: blur(8px);
+}
+
+.core-preview-readouts span {
+  grid-column: 1 / -1;
+  color: var(--ink-dim);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.core-preview-readouts strong {
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.core-preview-readouts code {
+  align-self: center;
+  color: var(--mint);
+  font-family: var(--font-mono);
+  font-size: 12px;
 }
 
 .core-preview-controls {
   position: relative;
   z-index: 3;
   display: grid;
-  grid-template-columns: auto minmax(100px, 1fr);
+  grid-template-columns: 36px minmax(100px, 1fr);
   gap: 14px;
   align-items: center;
   min-height: 54px;
@@ -104,11 +203,11 @@
 
 .core-preview-controls button {
   display: inline-flex;
+  width: 36px;
   min-height: 34px;
   align-items: center;
   justify-content: center;
-  gap: 7px;
-  padding: 0 11px;
+  padding: 0;
   color: #06110f;
   font-size: 9px;
   font-weight: 700;
@@ -160,9 +259,15 @@
 }
 
 .core-grid line {
-  stroke: rgba(169, 186, 184, 0.12);
+  stroke: rgba(125, 174, 255, 0.28);
   stroke-width: 1;
   stroke-dasharray: 2 8;
+}
+
+.core-grid text {
+  fill: var(--blue);
+  font-family: var(--font-mono);
+  font-size: 12px;
 }
 
 .core-envelope {
@@ -219,11 +324,17 @@
   stroke-dasharray: 5 7;
 }
 
-.core-geometry.compact .core-grid,
-.core-geometry.compact .core-divider text,
-.core-geometry.compact .core-scale-overlay,
-.core-geometry.compact .core-energy-overlay {
-  display: none;
+.core-blowup-signal circle {
+  fill: none;
+  stroke: var(--amber);
+  stroke-width: 1.2;
+  opacity: var(--blowup-opacity);
+  transform-origin: 350px 260px;
+  animation: blowup-signal var(--blowup-period) cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+.core-blowup-signal circle:last-child {
+  animation-delay: calc(var(--blowup-period) / -2);
 }
 
 .sr-only {
@@ -242,6 +353,11 @@
   to { stroke-dashoffset: -96; }
 }
 
+@keyframes blowup-signal {
+  from { opacity: var(--blowup-opacity); transform: scale(0.55); }
+  to { opacity: 0; transform: scale(2.8); }
+}
+
 @media (max-width: 800px) {
   .core-preview {
     width: 100%;
@@ -254,8 +370,6 @@
   }
 
   .core-preview-heading {
-    grid-template-columns: 1fr;
-    gap: 5px;
     padding: 16px 17px 0;
   }
 
@@ -263,8 +377,8 @@
     font-size: 24px;
   }
 
-  .core-preview-heading p {
-    max-width: 250px;
+  .core-preview-info > p {
+    width: min(285px, calc(100vw - 74px));
   }
 
   .core-preview-controls {
@@ -272,13 +386,35 @@
     padding: 9px 11px;
   }
 
-  .core-preview-controls button span {
-    display: none;
+  .core-preview-time {
+    top: 9px;
+    right: 10px;
+    min-width: 144px;
+  }
+
+  .core-preview-time strong {
+    font-size: 14px;
+  }
+
+  .core-preview-time code {
+    font-size: 14px;
+  }
+
+  .core-preview-readouts {
+    right: 10px;
+    bottom: 10px;
+    left: 10px;
+  }
+
+  .core-preview-readouts > div {
+    min-width: 0;
+    flex: 1;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .core-motion-line {
+  .core-motion-line,
+  .core-blowup-signal circle {
     animation: none;
   }
 }

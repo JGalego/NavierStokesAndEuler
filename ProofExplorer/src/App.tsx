@@ -44,11 +44,33 @@ function initialStepFromHash() {
   return match ? Number(match[1]) - 1 : 0
 }
 
-function StageRail({ activeStage, onSelect }: { activeStage: ProofStage; onSelect: (stage: ProofStage) => void }) {
+function StageRail({
+  activeStage,
+  isPlaying,
+  playbackDisabled,
+  onSelect,
+  onTogglePlayback,
+}: {
+  activeStage: ProofStage
+  isPlaying: boolean
+  playbackDisabled: boolean
+  onSelect: (stage: ProofStage) => void
+  onTogglePlayback: () => void
+}) {
   return (
     <aside className="stage-rail" aria-label="Proof stages">
       <div className="rail-heading">
         <span className="section-kicker">Proof outline</span>
+        <button
+          type="button"
+          className="rail-playback"
+          onClick={onTogglePlayback}
+          disabled={playbackDisabled}
+          aria-label={isPlaying ? 'Pause proof' : 'Play proof'}
+          title={isPlaying ? 'Pause proof' : 'Play proof'}
+        >
+          {isPlaying ? <Pause size={16} fill="currentColor" /> : <Play size={16} fill="currentColor" />}
+        </button>
       </div>
       <div className="stage-list">
         {proofStages.map((stage) => {
@@ -86,7 +108,6 @@ function StoryPanel({ stage }: { stage: ProofStage }) {
       <div className="story-copy">
         <div className="story-label"><BookOpen size={16} /> Mathematical argument</div>
         <p className="story-lead">{stage.story}</p>
-        <p className="bridge-note"><span>In Lean</span>{stage.bridge}</p>
       </div>
       <div className="concept-flow" aria-label={`Outline for ${stage.title}`}>
         {stageBeats[stage.id].map((beat, index) => (
@@ -175,16 +196,12 @@ function GoalState({
 function ProofWorkbench({
   action,
   total,
-  isPlaying,
-  onPlayingChange,
   onPrevious,
   onNext,
   onRestart,
 }: {
   action: ProofAction
   total: number
-  isPlaying: boolean
-  onPlayingChange: (playing: boolean) => void
   onPrevious: () => void
   onNext: () => void
   onRestart: () => void
@@ -198,16 +215,15 @@ function ProofWorkbench({
     <div className="workbench">
       <div className="workbench-bar">
         <div className="window-dots" aria-hidden="true"><span /><span /><span /></div>
-        <span className="file-label">ComparatorProofAnimation.lean</span>
+        <a className="file-label" href={sourceUrl} target="_blank" rel="noreferrer">
+          ComparatorProofAnimation.lean <ExternalLink size={11} />
+        </a>
         <span className="step-counter">move {action.index + 1} / {total}</span>
       </div>
 
       <div className="tactic-section">
         <div className="tactic-meta">
-          <div>
-            <span className="section-kicker">Lean move</span>
-            <h3>{lesson.label}</h3>
-          </div>
+          <h3>{lesson.label}</h3>
           <span className="concept-pill"><Braces size={14} /> {lesson.concept}</span>
         </div>
         <pre className="tactic-code"><span className="prompt">by</span> {action.tacticText}</pre>
@@ -245,15 +261,6 @@ function ProofWorkbench({
         </button>
         <button type="button" className="icon-button" onClick={onPrevious} disabled={action.index === 0} aria-label="Previous proof move">
           <ArrowLeft size={18} />
-        </button>
-        <button
-          type="button"
-          className="play-button"
-          onClick={() => onPlayingChange(!isPlaying)}
-          aria-label={isPlaying ? 'Pause proof playback' : 'Play proof'}
-        >
-          {isPlaying ? <Pause size={17} fill="currentColor" /> : <Play size={17} fill="currentColor" />}
-          {isPlaying ? 'Pause' : 'Play proof'}
         </button>
         <button type="button" className="icon-button" onClick={onNext} disabled={action.index === total - 1} aria-label="Next proof move">
           <ArrowRight size={18} />
@@ -347,6 +354,16 @@ function App() {
     return end === start ? 1 : (step - start) / (end - start)
   }, [activeStage, step])
 
+  const toggleProofPlayback = useCallback(() => {
+    if (!proof) return
+    if (isPlaying) {
+      setIsPlaying(false)
+      return
+    }
+    if (step >= proof.actions.length - 1) setStep(0)
+    setIsPlaying(true)
+  }, [isPlaying, proof, step])
+
   return (
     <div className="site-shell">
       <header className="site-header">
@@ -422,7 +439,13 @@ function App() {
           </div>
 
           <div className="explorer-grid">
-            <StageRail activeStage={activeStage} onSelect={(stage) => goToStep(stage.range[0])} />
+            <StageRail
+              activeStage={activeStage}
+              isPlaying={isPlaying}
+              playbackDisabled={!proof}
+              onSelect={(stage) => goToStep(stage.range[0])}
+              onTogglePlayback={toggleProofPlayback}
+            />
 
             <article className="stage-content" id="lean-replay">
               <header className="stage-header">
@@ -441,21 +464,12 @@ function App() {
               {lens !== 'lean' && <StoryPanel stage={activeStage} />}
 
               {lens !== 'story' && (
-                <section className="replay-section">
-                  <div className="replay-heading">
-                    <div>
-                      <span className="section-kicker">Inside the Lean proof</span>
-                      <h2>See what each tactic does to the goal</h2>
-                    </div>
-                    <a href={sourceUrl} target="_blank" rel="noreferrer">source <ExternalLink size={14} /></a>
-                  </div>
+                <section className="replay-section" aria-label="Lean proof replay">
                   {activeAction && proof ? (
                     <ProofWorkbench
                       key={activeAction.index}
                       action={activeAction}
                       total={proof.actions.length}
-                      isPlaying={isPlaying}
-                      onPlayingChange={setIsPlaying}
                       onPrevious={() => goToStep(step - 1)}
                       onNext={() => goToStep(step + 1)}
                       onRestart={() => goToStep(0)}

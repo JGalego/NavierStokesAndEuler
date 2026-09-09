@@ -1,15 +1,15 @@
-import { Pause, Play } from 'lucide-react'
+import { Info, Pause, Play } from 'lucide-react'
+import type { CSSProperties } from 'react'
 import { useEffect, useMemo, useState } from 'react'
 import './CorePreview.css'
 
-type CoreFocus = 'flow' | 'scales' | 'energy'
-
 interface CoreGeometryProps {
   time: number
-  focus: CoreFocus
   idPrefix: string
-  compact?: boolean
 }
+
+const END_TIME = 0.999
+const DISPLAY_H = 1 / 200
 
 function pointPath(points: Array<[number, number]>) {
   return points.map(([x, y], index) => `${index === 0 ? 'M' : 'L'}${x.toFixed(2)} ${y.toFixed(2)}`).join(' ')
@@ -42,11 +42,14 @@ function axialPath(height: number, radius: number, direction: -1 | 1, phase: num
   return pointPath(points)
 }
 
-function CoreGeometry({ time, focus, idPrefix, compact = false }: CoreGeometryProps) {
-  const tau = Math.max(0.015, 1 - time)
+function CoreGeometry({ time, idPrefix }: CoreGeometryProps) {
+  const tau = Math.max(0.001, 1 - time)
   const radius = 148 * (0.19 + 0.81 * Math.pow(tau, 0.62))
   const height = 170 * (0.42 + 0.58 * Math.pow(tau, 0.34))
-  const dashDuration = Math.max(0.38, 2.45 - time * 1.9)
+  const dashDuration = Math.max(0.24, 2.55 - time * 2.3)
+  const relativeSpeed = Math.pow(tau, -0.5 - DISPLAY_H)
+  const maximumSpeed = Math.pow(1 - END_TIME, -0.5 - DISPLAY_H)
+  const blowupIntensity = Math.log(relativeSpeed) / Math.log(maximumSpeed)
   const spiralPaths = useMemo(
     () => [
       spiralPath(radius, 0, 0),
@@ -75,11 +78,10 @@ function CoreGeometry({ time, focus, idPrefix, compact = false }: CoreGeometryPr
 
   return (
     <svg
-      className={`core-geometry focus-${focus}${compact ? ' compact' : ''}`}
+      className="core-geometry"
       viewBox="0 0 700 520"
-      role={compact ? undefined : 'img'}
-      aria-hidden={compact ? true : undefined}
-      aria-label={compact ? undefined : 'Schematic of the shrinking inner core with spiral inflow and axial outflow'}
+      role="img"
+      aria-label="The inner core contracts while its flow accelerates toward the singular time"
     >
       <defs>
         <radialGradient id={`${idPrefix}-core-fill`}>
@@ -96,15 +98,16 @@ function CoreGeometry({ time, focus, idPrefix, compact = false }: CoreGeometryPr
         <marker id={`${idPrefix}-orange-arrow`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
           <path d="M 0 0 L 10 5 L 0 10 z" fill="#ffc979" />
         </marker>
-        <marker id={`${idPrefix}-scale-arrow`} viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+        <marker id={`${idPrefix}-axis-arrow`} viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
           <path d="M 0 0 L 10 5 L 0 10 z" fill="#7daeff" />
         </marker>
       </defs>
 
       <g className="core-grid" aria-hidden="true">
-        <line x1="350" y1="48" x2="350" y2="472" />
-        <line x1="92" y1="260" x2="608" y2="260" />
-        {!compact && <><text x="360" y="62">z</text><text x="593" y="249">r</text></>}
+        <line x1="350" y1="472" x2="350" y2="48" markerEnd={`url(#${idPrefix}-axis-arrow)`} />
+        <line x1="92" y1="260" x2="608" y2="260" markerEnd={`url(#${idPrefix}-axis-arrow)`} />
+        <text x="362" y="61">z</text>
+        <text x="592" y="247">r</text>
       </g>
 
       <path className="core-envelope" d={envelope} fill={`url(#${idPrefix}-core-fill)`} />
@@ -116,6 +119,18 @@ function CoreGeometry({ time, focus, idPrefix, compact = false }: CoreGeometryPr
         ry={Math.max(6, radius * 0.09)}
         filter={`url(#${idPrefix}-glow)`}
       />
+
+      <g
+        className="core-blowup-signal"
+        aria-hidden="true"
+        style={{
+          '--blowup-opacity': (0.04 + blowupIntensity * 0.68).toFixed(3),
+          '--blowup-period': `${Math.max(0.38, 1.8 - blowupIntensity * 1.35).toFixed(2)}s`,
+        } as CSSProperties}
+      >
+        <circle cx="350" cy="260" r="24" />
+        <circle cx="350" cy="260" r="24" />
+      </g>
 
       <g className="core-rings">
         {[-0.2, 0, 0.2].map((offset) => {
@@ -158,48 +173,26 @@ function CoreGeometry({ time, focus, idPrefix, compact = false }: CoreGeometryPr
 
       <g className="core-divider">
         <line x1={350 - radius * 1.12} y1="260" x2={350 + radius * 1.12} y2="260" />
-        {!compact && <text x={350 + radius * 0.48} y="248">dividing layer</text>}
-      </g>
-
-      <g className="core-scale-overlay">
-        <line
-          x1={350 - radius}
-          y1="418"
-          x2={350 + radius}
-          y2="418"
-          markerStart={`url(#${idPrefix}-scale-arrow)`}
-          markerEnd={`url(#${idPrefix}-scale-arrow)`}
-        />
-        <text x="350" y="443" textAnchor="middle">radial scale ℓᵣ</text>
-        <line
-          x1={350 + radius + 50}
-          y1={260 - height}
-          x2={350 + radius + 50}
-          y2={260 + height}
-          markerStart={`url(#${idPrefix}-scale-arrow)`}
-          markerEnd={`url(#${idPrefix}-scale-arrow)`}
-        />
-        <text x={350 + radius + 66} y="260" transform={`rotate(90 ${350 + radius + 66} 260)`} textAnchor="middle">axial scale ℓz</text>
-      </g>
-
-      <g className="core-energy-overlay">
-        <circle cx="350" cy="260" r={18 + time * 15} />
-        <circle cx="350" cy="260" r={38 + time * 22} />
       </g>
     </svg>
   )
 }
 
 export function CorePreview() {
-  const [time, setTime] = useState(0.28)
+  const [time, setTime] = useState(0)
   const [playing, setPlaying] = useState(false)
-  const isPlaying = playing && time < 0.985
-  const tau = Math.max(0.015, 1 - time)
+  const isPlaying = playing && time < END_TIME
+  const tau = Math.max(0.001, 1 - time)
+  const relativeSpeed = Math.pow(tau, -0.5 - DISPLAY_H)
+  const relativeEnergy = Math.pow(tau, 0.5 - 3 * DISPLAY_H)
+  const maximumSpeed = Math.pow(1 - END_TIME, -0.5 - DISPLAY_H)
+  const blowupIntensity = Math.log(relativeSpeed) / Math.log(maximumSpeed)
+  const speedLabel = relativeSpeed < 10 ? relativeSpeed.toFixed(2) : relativeSpeed.toFixed(1)
 
   useEffect(() => {
     if (!isPlaying) return
     const timer = window.setInterval(() => {
-      setTime((current) => Math.min(0.985, current + 0.006))
+      setTime((current) => Math.min(END_TIME, current + 0.006))
     }, 45)
     return () => window.clearInterval(timer)
   }, [isPlaying])
@@ -207,15 +200,37 @@ export function CorePreview() {
   return (
     <section className="core-preview" aria-labelledby="hero-core-title">
       <header className="core-preview-heading">
-        <h2 id="hero-core-title">Watch the singularity take shape.</h2>
-        <p>The core contracts as its angular and axial speeds diverge.</p>
+        <h2 id="hero-core-title"><span>Watch the singularity</span> <span>take shape.</span></h2>
+        <div className="core-preview-info">
+          <button type="button" aria-label="How to read the singularity animation" aria-describedby="core-preview-explanation">
+            <Info size={16} />
+          </button>
+          <p id="core-preview-explanation" role="tooltip">
+            The core contracts as its angular and axial speeds diverge. The readouts use h = 1/200, within the paper’s range 0 &lt; h &lt; 1/100.
+          </p>
+        </div>
       </header>
 
-      <div className="core-preview-visual">
-        <CoreGeometry time={time} focus="flow" compact idPrefix="hero-core" />
+      <div
+        className="core-preview-visual"
+        style={{ boxShadow: `inset 0 0 ${12 + blowupIntensity * 58}px rgba(255, 201, 121, ${0.02 + blowupIntensity * 0.17})` }}
+      >
+        <CoreGeometry time={time} idPrefix="hero-core" />
         <div className="core-preview-time" aria-live="polite">
           <strong>t = {time.toFixed(3)}</strong>
           <code>τ = {tau.toFixed(3)}</code>
+        </div>
+        <div className="core-preview-readouts" aria-label="Blowup scaling readouts">
+          <div>
+            <span>relative speed</span>
+            <strong>×{speedLabel}</strong>
+            <code>τ<sup>−1/2−h</sup></code>
+          </div>
+          <div>
+            <span>core energy</span>
+            <strong>{Math.round(relativeEnergy * 100)}%</strong>
+            <code>τ<sup>1/2−3h</sup></code>
+          </div>
         </div>
       </div>
 
@@ -223,28 +238,28 @@ export function CorePreview() {
         <button
           type="button"
           onClick={() => {
-            if (time >= 0.985) setTime(0.28)
-            setPlaying((current) => !current || time >= 0.985)
+            if (time >= END_TIME) setTime(0)
+            setPlaying((current) => !current || time >= END_TIME)
           }}
           aria-label={isPlaying ? 'Pause singularity animation' : 'Play singularity animation'}
+          title={isPlaying ? 'Pause' : 'Play'}
         >
-          {isPlaying ? <Pause size={14} fill="currentColor" /> : <Play size={14} fill="currentColor" />}
-          <span>{isPlaying ? 'Pause' : 'Approach t = 1'}</span>
+          {isPlaying ? <Pause size={17} fill="currentColor" /> : <Play size={17} fill="currentColor" />}
         </button>
         <label htmlFor="hero-core-time">
           <span className="sr-only">Time before singularity</span>
           <input
             id="hero-core-time"
             type="range"
-            min="0.05"
-            max="0.985"
-            step="0.005"
+            min="0"
+            max={END_TIME}
+            step="0.001"
             value={time}
             onChange={(event) => {
               setPlaying(false)
               setTime(Number(event.target.value))
             }}
-            style={{ background: `linear-gradient(90deg, var(--mint) ${((time - 0.05) / 0.935) * 100}%, rgba(183, 231, 221, 0.15) 0)` }}
+            style={{ background: `linear-gradient(90deg, var(--mint) ${(time / END_TIME) * 100}%, rgba(183, 231, 221, 0.15) 0)` }}
           />
         </label>
       </div>
