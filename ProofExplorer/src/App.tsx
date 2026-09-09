@@ -29,11 +29,11 @@ const repositoryUrl = 'https://github.com/JGalego/NavierStokesAndEuler'
 const sourceUrl = `${repositoryUrl}/blob/feat/proof-animation/NavierStokes/ComparatorProofAnimation.lean`
 
 const stageBeats: Record<string, string[]> = {
-  candidate: ['choose u, p, and f', 'record the PDE and support', 'record failure of global agreement'],
-  'admissible-data': ['start from compact support', 'rescale f by ν²', 'prove Comparator decay'],
-  normalization: ['suppose v and q exist', 'rescale by ν⁻¹', 'build a viscosity-one solution'],
-  comparison: ['fix 0 ≤ t < 1', 'restrict to [0,t]', 'invoke uniqueness'],
-  contradiction: ['deduce u = v₁', 'use global smoothness', 'contradict the candidate theorem'],
+  candidate: ['unpack u, p, and f', 'read the certificate h', 'keep the construction folded'],
+  'admissible-data': ['use compact support', 'replace f by ν²f', 'prove the decay condition'],
+  normalization: ['suppose v and q exist', 'rescale by ν⁻¹', 'verify the new solution'],
+  comparison: ['fix 0 ≤ t < 1', 'work on [0,t]', 'apply uniqueness'],
+  contradiction: ['obtain u = v₁', 'use smoothness of v₁', 'contradict h'],
 }
 
 function initialStepFromHash() {
@@ -110,7 +110,7 @@ function StageRail({ activeStage, onSelect }: { activeStage: ProofStage; onSelec
       </div>
       <div className="rail-note">
         <Waves size={18} />
-        <p>The construction spans many named theorems. This page follows the final argument without drawing the entire dependency graph.</p>
+        <p>Most construction lemmas stay folded away here. The full Lean source remains close at hand.</p>
       </div>
     </aside>
   )
@@ -403,14 +403,15 @@ function App() {
       <main id="top">
         <section className="hero-section">
           <div className="hero-copy">
-            <div className="eyebrow"><span /> A PDE proof checked in Lean 4</div>
-            <h1>A Navier–Stokes blow-up proof, down to the <em>Lean goals.</em></h1>
+            <div className="eyebrow"><span /> Navier–Stokes in Lean 4</div>
+            <h1>The breakdown proof, with every <em>Lean goal</em> left in view.</h1>
             <p className="hero-lead">
-              Five sections place the whole-space PDE argument beside the tactics and goal states checked by Lean 4.
+              The argument starts with a compactly supported solution and ends in a contradiction at time one.
+              Read the mathematics, inspect the proof state, or keep both on screen.
             </p>
             <div className="hero-actions">
-              <a className="primary-action" href="#journey">Start reading <ArrowDown size={17} /></a>
-              <a className="secondary-action" href={sourceUrl} target="_blank" rel="noreferrer">Open the Lean source <ExternalLink size={15} /></a>
+              <a className="primary-action" href="#journey">Read the argument <ArrowDown size={17} /></a>
+              <a className="secondary-action" href={sourceUrl} target="_blank" rel="noreferrer">Open the source <ExternalLink size={15} /></a>
             </div>
             <div className="hero-metrics" aria-label="Proof summary">
               <div><strong>46</strong><span>tactics</span></div>
@@ -440,7 +441,7 @@ function App() {
         </section>
 
         <section className="validation-ribbon" aria-label="Validation status">
-          <span className="ribbon-intro"><ShieldCheck size={18} /> Checked with</span>
+          <span className="ribbon-intro"><ShieldCheck size={18} /> Checked by</span>
           <span>Lean kernel</span><i />
           <span>Comparator</span><i />
           <span>Nanoda</span><i />
@@ -450,9 +451,9 @@ function App() {
         <section className="journey-section" id="journey">
           <div className="section-heading">
             <div>
-              <span className="section-kicker">The proof</span>
-              <h2>Read the argument beside the Lean state.</h2>
-              <p>The mathematics and Lean views can be read separately or side by side.</p>
+              <span className="section-kicker">Read the proof</span>
+              <h2>The argument stays beside the goal state.</h2>
+              <p>Five parts carry the proof from the singular candidate to the final <code>exact</code>.</p>
             </div>
             <div className="lens-switcher" aria-label="Reading mode">
               {([
@@ -490,8 +491,8 @@ function App() {
                 <section className="replay-section">
                   <div className="replay-heading">
                     <div>
-                      <span className="section-kicker">Lean replay</span>
-                      <h2>How each tactic changes the goal</h2>
+                      <span className="section-kicker">Inside the Lean proof</span>
+                      <h2>See what each tactic does to the goal</h2>
                     </div>
                     <a href={sourceUrl} target="_blank" rel="noreferrer">source <ExternalLink size={14} /></a>
                   </div>
@@ -539,8 +540,8 @@ function App() {
 
         <section className="verification-section" id="verification">
           <div className="verification-heading">
-            <span className="section-kicker">Verification</span>
-            <h2>What the checks establish</h2>
+            <span className="section-kicker">Proof checks</span>
+            <h2>What has actually been checked</h2>
           </div>
           <div className="verification-grid">
             <article>
@@ -572,7 +573,7 @@ function App() {
 
       <footer>
         <div className="footer-brand"><span className="brand-mark"><Waves size={18} /></span><strong>Blow-Up Lab</strong></div>
-        <p>Reading the Navier–Stokes and Euler formalizations.</p>
+        <p>A close reading of the Navier–Stokes and Euler formalizations.</p>
         <div className="footer-links">
           <a href={repositoryUrl} target="_blank" rel="noreferrer"><GitFork size={15} /> Source</a>
           <a href={sourceUrl} target="_blank" rel="noreferrer"><Code2 size={15} /> Animated theorem</a>
