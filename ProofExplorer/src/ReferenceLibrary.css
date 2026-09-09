@@ -83,7 +83,7 @@
 
 .primary-reference > div:nth-child(2) > span {
   color: var(--mint);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
@@ -101,7 +101,7 @@
   max-width: 620px;
   margin: 0;
   color: var(--ink-soft);
-  font-size: 11px;
+  font-size: 14px;
   line-height: 1.65;
 }
 
@@ -121,7 +121,7 @@
   gap: 8px;
   padding: 0 12px;
   color: var(--ink);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   text-decoration: none;
   border: 1px solid var(--line-strong);
@@ -151,7 +151,7 @@
   min-height: 34px;
   padding: 0 12px;
   color: var(--ink-dim);
-  font-size: 9px;
+  font-size: 11px;
   font-weight: 700;
   border: 1px solid var(--line);
   border-radius: 999px;
@@ -199,21 +199,21 @@
   padding-top: 3px;
   color: var(--mint);
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 12px;
 }
 
 .reference-entry span {
   display: block;
   color: var(--ink-dim);
-  font-size: 9px;
-  line-height: 1.45;
+  font-size: 12px;
+  line-height: 1.5;
 }
 
 .reference-entry h3 {
   margin: 8px 0 10px;
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: 18px;
+  font-size: 21px;
   font-weight: 500;
   line-height: 1.25;
 }
@@ -221,16 +221,16 @@
 .reference-entry p {
   margin: 0 0 12px;
   color: var(--ink-soft);
-  font-size: 10px;
-  line-height: 1.62;
+  font-size: 14px;
+  line-height: 1.65;
 }
 
 .reference-entry small {
   display: block;
   color: var(--ink-dim);
   font-family: var(--font-mono);
-  font-size: 7.5px;
-  line-height: 1.5;
+  font-size: 11px;
+  line-height: 1.55;
 }
 
 .reference-entry > a {

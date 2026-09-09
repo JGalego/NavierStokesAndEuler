@@ -334,8 +334,8 @@ function App() {
   useEffect(() => {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target
-      if (target instanceof HTMLElement && target.closest('button, a, input, textarea, summary')) return
       if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        if (target instanceof HTMLElement && target.closest('input, textarea, select, [contenteditable="true"]')) return
         const currentStage = stageForStep(step)
         const currentStageIndex = proofStages.findIndex(({ id }) => id === currentStage.id)
         const direction = event.key === 'ArrowLeft' ? -1 : 1
@@ -346,6 +346,7 @@ function App() {
         }
       }
       if (event.key === ' ' && !event.repeat) {
+        if (target instanceof HTMLElement && target.closest('button, a, input, textarea, select, summary, [contenteditable="true"]')) return
         event.preventDefault()
         setIsPlaying((playing) => !playing)
       }
@@ -511,37 +512,34 @@ function App() {
               </div>
             </article>
           </div>
-        </section>
 
-        <section className="verification-section" id="verification">
-          <div className="verification-heading">
-            <h2>See what the checkers certify.</h2>
-          </div>
-          <div className="verification-grid">
-            <article>
-              <span className="verification-icon"><CheckCircle2 size={21} /></span>
-              <h3>Lean kernel</h3>
-              <p><code>navier_stokes_breakdown_R3</code> type-checks with no <code>sorry</code>. Its only axioms are <code>propext</code>, <code>Classical.choice</code>, and <code>Quot.sound</code>.</p>
-            </article>
-            <article>
-              <span className="verification-icon"><Braces size={21} /></span>
-              <h3>Comparator</h3>
-              <p>A separately compiled challenge module checks that the exported theorem has the formal statement expected by Comparator.</p>
-            </article>
-            <article>
-              <span className="verification-icon"><ShieldCheck size={21} /></span>
-              <h3>Independent kernel</h3>
-              <p>Nanoda also accepts the exported proof term. Its checker is independent of Lean’s kernel implementation.</p>
-            </article>
-            <article className="boundary-card">
-              <span className="verification-icon"><CircleHelp size={21} /></span>
-              <h3>Scope of the checks</h3>
-              <p>The checks certify the formal proof. Whether the definitions and hypotheses faithfully express the intended PDE theorem still requires mathematical review.</p>
-            </article>
-          </div>
-          <a className="text-link" href={`${repositoryUrl}#validation-status`} target="_blank" rel="noreferrer">
-            Read the repository’s validation statement <ArrowRight size={15} />
-          </a>
+          <aside className="verification-band" id="verification" aria-label="Proof verification">
+            <div className="verification-grid">
+              <article>
+                <span className="verification-icon"><CheckCircle2 size={21} /></span>
+                <h3>Lean kernel</h3>
+                <p><code>navier_stokes_breakdown_R3</code> type-checks with no <code>sorry</code>. Its only axioms are <code>propext</code>, <code>Classical.choice</code>, and <code>Quot.sound</code>.</p>
+              </article>
+              <article>
+                <span className="verification-icon"><Braces size={21} /></span>
+                <h3>Comparator</h3>
+                <p>A separately compiled challenge module checks that the exported theorem has the formal statement expected by Comparator.</p>
+              </article>
+              <article>
+                <span className="verification-icon"><ShieldCheck size={21} /></span>
+                <h3>Independent kernel</h3>
+                <p>Nanoda also accepts the exported proof term. Its checker is independent of Lean’s kernel implementation.</p>
+              </article>
+              <article className="boundary-card">
+                <span className="verification-icon"><CircleHelp size={21} /></span>
+                <h3>Scope of the checks</h3>
+                <p>The checks certify the formal proof. Whether the definitions and hypotheses faithfully express the intended PDE theorem still requires mathematical review.</p>
+              </article>
+            </div>
+            <a className="text-link" href={`${repositoryUrl}#validation-status`} target="_blank" rel="noreferrer">
+              Read the repository’s validation statement <ArrowRight size={15} />
+            </a>
+          </aside>
         </section>
 
         <ReferenceLibrary paperUrl={paperUrl} />

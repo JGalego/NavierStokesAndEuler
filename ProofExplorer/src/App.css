@@ -369,8 +369,7 @@
   font-weight: 700;
 }
 
-.section-heading h2,
-.verification-heading h2 {
+.section-heading h2 {
   margin: 0;
   color: var(--ink);
   font-family: var(--font-display);
@@ -1261,17 +1260,10 @@
   border-color: rgba(185, 154, 255, 0.18);
 }
 
-.verification-section {
-  width: min(1280px, calc(100% - 48px));
-  min-height: 100svh;
-  margin: 0 auto;
-  padding: 105px 0 110px;
+.verification-band {
+  margin-top: 28px;
+  padding-top: 28px;
   border-top: 1px solid var(--line);
-}
-
-.verification-heading {
-  max-width: 610px;
-  margin-bottom: 40px;
 }
 
 .verification-grid {
@@ -1281,8 +1273,8 @@
 }
 
 .verification-grid article {
-  min-height: 230px;
-  padding: 24px;
+  min-height: 205px;
+  padding: 22px;
   border: 1px solid var(--line);
   border-radius: 7px;
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.008));
@@ -1331,7 +1323,7 @@
   font-size: 0.88em;
 }
 
-.verification-section > .text-link {
+.verification-band > .text-link {
   width: max-content;
   margin-top: 25px;
 }
@@ -1418,7 +1410,6 @@ footer > p { margin: 0; }
   .validation-ribbon > * { flex: 0 0 auto; }
 
   .journey-section,
-  .verification-section,
   footer {
     width: min(100% - 32px, 1280px);
   }
@@ -1450,7 +1441,7 @@ footer > p { margin: 0; }
   .hero-visual { min-height: 520px; padding: 24px 0 18px; }
   .theorem-card { width: 94%; padding: 17px; }
   .theorem-card > p { font-size: 18px; }
-  .section-heading h2, .verification-heading h2 { font-size: 37px; }
+  .section-heading h2 { font-size: 37px; }
   .lens-switcher { width: 100%; }
   .lens-switcher button { flex: 1; justify-content: center; }
   .stage-header { grid-template-columns: 44px 1fr; gap: 13px; padding: 25px 20px 22px; }
