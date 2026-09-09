@@ -79,8 +79,8 @@ formalization environment before collecting the theorem's tactic information.
 
 ## YouTube thumbnail
 
-After rendering the video, generate the thumbnail from a representative proof
-state at 30 seconds:
+After rendering the video, generate the thumbnail from a stable proof state at
+about eight seconds:
 
 ```sh
 python3 ProofAnimation/create_thumbnail.py
