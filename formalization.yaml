@@ -43,7 +43,8 @@ classification:
     - "35Q31"
 
 status:
-  scope: "Full formalization of main results."
+  scope: >-
+    Proofs of the four exact Comparator targets listed under main_results.
   sorry_count: 0
   sorry_in_definitions: 0
   main_results:
@@ -100,6 +101,10 @@ automation:
 
 review:
   status: "self-assessed"
+  notes: >-
+    All four main results have passed Comparator statement comparison, Nanoda,
+    and Lean's default kernel. This records mechanical validation, not an
+    independent human review of the PDE mathematics or source alignment.
 
 alignment:
   namespaces:

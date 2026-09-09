@@ -4,6 +4,20 @@ This repository contains Lean 4 formalizations of the results presented in
 “Finite time blowup for Navier–Stokes” and
 “Finite time blowup for the Euler equation” by OpenAI.
 
+## Validation status
+
+The four declarations listed as main results in
+[`formalization.yaml`](formalization.yaml) have been checked with Comparator
+against independently built challenge modules. Their exported proof terms were
+accepted by both Nanoda and Lean's default kernel, and their dependency closures
+use only `propext`, `Classical.choice`, and `Quot.sound`.
+
+This is a statement about the exact Lean declarations and their kernel checking.
+The source-to-formalization alignment and mathematical review status remain
+self-assessed. See the
+[Comparator challenge instructions](ComparatorChallenges/README.md) to reproduce
+the checks.
+
 ## Navier Stokes
 
 For every positive viscosity, we prove two results:
