@@ -265,7 +265,7 @@ function ProofWorkbench({
         <button type="button" className="icon-button" onClick={onNext} disabled={action.index === total - 1} aria-label="Next proof move">
           <ArrowRight size={18} />
         </button>
-        <div className="keyboard-hint"><kbd>←</kbd><kbd>→</kbd><span>move</span></div>
+        <div className="keyboard-hint"><kbd>←</kbd><kbd>→</kbd><span>section</span></div>
       </div>
     </div>
   )
@@ -335,8 +335,16 @@ function App() {
     const onKeyDown = (event: KeyboardEvent) => {
       const target = event.target
       if (target instanceof HTMLElement && target.closest('button, a, input, textarea, summary')) return
-      if (event.key === 'ArrowLeft') goToStep(step - 1)
-      if (event.key === 'ArrowRight') goToStep(step + 1)
+      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
+        const currentStage = stageForStep(step)
+        const currentStageIndex = proofStages.findIndex(({ id }) => id === currentStage.id)
+        const direction = event.key === 'ArrowLeft' ? -1 : 1
+        const nextStage = proofStages[currentStageIndex + direction]
+        if (nextStage) {
+          event.preventDefault()
+          goToStep(nextStage.range[0])
+        }
+      }
       if (event.key === ' ' && !event.repeat) {
         event.preventDefault()
         setIsPlaying((playing) => !playing)
