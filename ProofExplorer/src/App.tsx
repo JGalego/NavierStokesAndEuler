@@ -370,7 +370,7 @@ function App() {
             <div className="hero-copy">
               <h1>OpenAI’s Navier–Stokes blowup proof <em>meets Lean 4</em></h1>
               <div className="hero-actions">
-                <a className="primary-action" href="#singularity">Explore the flow <ArrowDown size={17} /></a>
+                <a className="primary-action" href="#journey">Explore the proof <ArrowDown size={17} /></a>
                 <a className="secondary-action" href={paperUrl} target="_blank" rel="noreferrer">Read the paper <ExternalLink size={15} /></a>
               </div>
             </div>
