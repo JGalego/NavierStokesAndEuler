@@ -15,7 +15,7 @@ export const proofStages: ProofStage[] = [
     leanFocus: ['obtain', 'existential witnesses', 'structure projections'],
     concepts: ['compact support', 'blow-up candidate', 'viscosity one'],
     question: 'What should be in the context after obtain?',
-    answer: 'Four names: u, p, f, and h. The first three are the fields; h carries their equation, support, smoothness, and non-agreement properties.',
+    answer: 'Lean introduces u, p, f, and h. The fields are u, p, and f; h carries their equation, support, smoothness, and non-agreement properties.',
   },
   {
     id: 'admissible-data',

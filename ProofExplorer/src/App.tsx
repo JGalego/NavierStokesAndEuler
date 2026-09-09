@@ -22,11 +22,14 @@ import {
 } from 'lucide-react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import './App.css'
+import CoreExplorer, { CorePreview } from './CoreExplorer'
 import { lessonFor, proofStages, stageForStep } from './proofContent'
+import ReferenceLibrary from './ReferenceLibrary'
 import type { GoalSnapshot, Lens, ProofAction, ProofData, ProofStage } from './types'
 
 const repositoryUrl = 'https://github.com/JGalego/NavierStokesAndEuler'
 const sourceUrl = `${repositoryUrl}/blob/feat/proof-animation/NavierStokes/ComparatorProofAnimation.lean`
+const paperUrl = 'https://cdn.openai.com/pdf/32d9f210-8b73-45e0-91bc-82a30aef8a9a/navier-stokes.pdf'
 
 const stageBeats: Record<string, string[]> = {
   candidate: ['unpack u, p, and f', 'read the certificate h', 'keep the construction folded'],
@@ -41,50 +44,11 @@ function initialStepFromHash() {
   return match ? Number(match[1]) - 1 : 0
 }
 
-function FlowField() {
-  return (
-    <svg className="flow-field" viewBox="0 0 720 540" aria-hidden="true">
-      <defs>
-        <linearGradient id="flowGradient" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#78e8d0" />
-          <stop offset="0.48" stopColor="#66a8ff" />
-          <stop offset="1" stopColor="#b486ff" />
-        </linearGradient>
-        <radialGradient id="vortexGlow">
-          <stop offset="0" stopColor="#7cebd5" stopOpacity="0.52" />
-          <stop offset="1" stopColor="#7cebd5" stopOpacity="0" />
-        </radialGradient>
-        <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
-          <feGaussianBlur stdDeviation="9" />
-        </filter>
-      </defs>
-      <circle cx="470" cy="250" r="180" fill="url(#vortexGlow)" filter="url(#softGlow)" />
-      {[
-        'M-30 134 C 142 58, 220 225, 385 173 S 596 30, 772 119',
-        'M-34 185 C 140 98, 255 276, 417 200 S 610 76, 762 163',
-        'M-44 239 C 131 139, 268 327, 448 226 S 625 129, 770 214',
-        'M-22 301 C 152 184, 290 376, 485 257 S 646 193, 759 278',
-        'M20 365 C 182 235, 323 424, 520 294 S 654 262, 737 350',
-        'M92 428 C 228 302, 374 462, 557 338 S 649 340, 695 433',
-      ].map((path, index) => (
-        <path key={path} d={path} className={`stream stream-${index + 1}`} />
-      ))}
-      <path
-        d="M386 220 C430 169 520 174 546 234 C575 301 508 363 443 340 C382 318 365 262 403 225 C444 185 509 211 506 258 C503 296 464 311 438 288 C417 269 426 239 450 233"
-        className="vortex-line"
-      />
-      <circle cx="450" cy="256" r="6" fill="#c9fff3" className="vortex-core" />
-      <circle cx="450" cy="256" r="23" className="vortex-ring" />
-    </svg>
-  )
-}
-
 function StageRail({ activeStage, onSelect }: { activeStage: ProofStage; onSelect: (stage: ProofStage) => void }) {
   return (
     <aside className="stage-rail" aria-label="Proof stages">
       <div className="rail-heading">
         <span className="section-kicker">Proof outline</span>
-        <span className="rail-count">5 parts</span>
       </div>
       <div className="stage-list">
         {proofStages.map((stage) => {
@@ -391,9 +355,9 @@ function App() {
           <span>BLOW·UP <strong>LAB</strong></span>
         </a>
         <nav aria-label="Primary navigation">
-          <a href="#journey">Argument</a>
-          <a href="#lean-replay">Lean proof</a>
-          <a href="#verification">Checks</a>
+          <a href="#inner-core">Inner core</a>
+          <a href="#journey">Proof</a>
+          <a href="#references">References</a>
         </nav>
         <a className="github-link" href={repositoryUrl} target="_blank" rel="noreferrer">
           <GitFork size={17} /> <span>Repository</span>
@@ -403,24 +367,18 @@ function App() {
       <main id="top">
         <section className="hero-section">
           <div className="hero-copy">
-            <div className="eyebrow"><span /> Clay problem · alternative C</div>
-            <h1>Breakdown of Navier–Stokes solutions on ℝ³, <em>checked in Lean 4.</em></h1>
+            <h1>OpenAI’s Navier–Stokes blowup proof <em>meets Lean 4</em></h1>
             <div className="hero-actions">
-              <a className="primary-action" href="#journey">Read the argument <ArrowDown size={17} /></a>
-              <a className="secondary-action" href={sourceUrl} target="_blank" rel="noreferrer">Open the source <ExternalLink size={15} /></a>
-            </div>
-            <div className="hero-metrics" aria-label="Proof summary">
-              <div><strong>46</strong><span>tactics</span></div>
-              <div><strong>5</strong><span>parts</span></div>
-              <div><strong>0</strong><span>open goals</span></div>
+              <a className="primary-action" href="#inner-core">Explore the flow <ArrowDown size={17} /></a>
+              <a className="secondary-action" href={paperUrl} target="_blank" rel="noreferrer">Read the paper <ExternalLink size={15} /></a>
             </div>
           </div>
 
           <div className="hero-visual">
-            <FlowField />
+            <CorePreview />
             <div className="theorem-card">
               <div className="theorem-card-top">
-                <span><Target size={15} /> Target theorem</span>
+                <span><Target size={15} /> Formal target</span>
                 <span className="verified"><CheckCircle2 size={14} /> checked</span>
               </div>
               <code>navier_stokes_breakdown_R3</code>
@@ -431,8 +389,6 @@ function App() {
                 <span>finite-time blow-up</span>
               </div>
             </div>
-            <div className="floating-proof-pill pill-one"><Code2 size={14} /> Lean 4.34</div>
-            <div className="floating-proof-pill pill-two"><ShieldCheck size={14} /> Comparator</div>
           </div>
         </section>
 
@@ -441,15 +397,17 @@ function App() {
           <span>Lean kernel</span><i />
           <span>Comparator</span><i />
           <span>Nanoda</span><i />
-          <span>3 standard axioms</span>
+          <span>standard axioms only</span>
         </section>
+
+        <CoreExplorer paperUrl={paperUrl} />
 
         <section className="journey-section" id="journey">
           <div className="section-heading">
             <div>
               <span className="section-kicker">Read the proof</span>
-              <h2>The argument stays beside the goal state.</h2>
-              <p>Five parts carry the proof from the singular candidate to the final <code>exact</code>.</p>
+              <h2>See the proof unfold in Lean.</h2>
+              <p>Follow the singular candidate through scaling and uniqueness to the final <code>exact</code>.</p>
             </div>
             <div className="lens-switcher" aria-label="Reading mode">
               {([
@@ -565,14 +523,16 @@ function App() {
             Read the repository’s validation statement <ArrowRight size={15} />
           </a>
         </section>
+
+        <ReferenceLibrary paperUrl={paperUrl} />
       </main>
 
       <footer>
         <div className="footer-brand"><span className="brand-mark"><Waves size={18} /></span><strong>Blow-Up Lab</strong></div>
         <p>A close reading of the Navier–Stokes and Euler formalizations.</p>
         <div className="footer-links">
+          <a href={paperUrl} target="_blank" rel="noreferrer"><BookOpen size={15} /> Paper</a>
           <a href={repositoryUrl} target="_blank" rel="noreferrer"><GitFork size={15} /> Source</a>
-          <a href={sourceUrl} target="_blank" rel="noreferrer"><Code2 size={15} /> Animated theorem</a>
         </div>
       </footer>
     </div>

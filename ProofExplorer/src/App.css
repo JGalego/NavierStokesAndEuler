@@ -122,7 +122,6 @@
   padding: 80px 0 90px;
 }
 
-.eyebrow,
 .section-kicker,
 .stage-label,
 .story-label,
@@ -133,24 +132,6 @@
 .ribbon-intro {
   text-transform: uppercase;
   letter-spacing: 0.13em;
-}
-
-.eyebrow {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-  margin-bottom: 25px;
-  color: var(--mint);
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.eyebrow > span {
-  display: block;
-  width: 29px;
-  height: 1px;
-  background: var(--mint);
-  box-shadow: 0 0 12px var(--mint);
 }
 
 .hero-copy h1 {
@@ -212,112 +193,27 @@
   background: rgba(128, 234, 210, 0.06);
 }
 
-.hero-metrics {
-  display: flex;
-  gap: 30px;
-  margin-top: 50px;
-}
-
-.hero-metrics div {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding-left: 14px;
-  border-left: 1px solid var(--line-strong);
-}
-
-.hero-metrics strong {
-  color: var(--ink);
-  font-family: var(--font-display);
-  font-size: 24px;
-  font-weight: 500;
-}
-
-.hero-metrics span {
-  color: var(--ink-dim);
-  font-size: 10px;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
 .hero-visual {
   position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: 14px;
   align-self: stretch;
   min-height: 610px;
-}
-
-.flow-field {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 112%;
-  height: auto;
-  overflow: visible;
-  opacity: 0.82;
-  transform: translate(-48%, -51%);
-  mask-image: linear-gradient(to right, transparent, black 14%, black 88%, transparent);
-}
-
-.stream,
-.vortex-line,
-.vortex-ring {
-  fill: none;
-  stroke: url(#flowGradient);
-  stroke-linecap: round;
-}
-
-.stream {
-  stroke-width: 1.05;
-  stroke-dasharray: 3 9;
-  animation: current-flow 13s linear infinite;
-}
-
-.stream-2,
-.stream-5 { animation-duration: 17s; }
-.stream-3,
-.stream-6 { animation-duration: 22s; }
-.stream-2,
-.stream-4,
-.stream-6 { animation-direction: reverse; }
-
-.vortex-line {
-  stroke-width: 1.6;
-  stroke-dasharray: 5 7;
-  animation: current-flow 10s linear infinite;
-}
-
-.vortex-ring {
-  stroke: rgba(180, 255, 237, 0.44);
-  stroke-width: 1px;
-  transform-origin: 450px 256px;
-  animation: vortex-pulse 3.5s ease-out infinite;
-}
-
-.vortex-core {
-  filter: drop-shadow(0 0 10px #b4ffed);
-}
-
-@keyframes current-flow {
-  to { stroke-dashoffset: -140; }
-}
-
-@keyframes vortex-pulse {
-  0% { opacity: 0.8; transform: scale(0.8); }
-  75%, 100% { opacity: 0; transform: scale(2.4); }
+  padding: 42px 0 24px;
 }
 
 .theorem-card {
-  position: absolute;
-  z-index: 3;
-  top: 50%;
-  right: 5%;
-  width: min(420px, 76%);
-  padding: 23px;
+  position: relative;
+  z-index: 6;
+  justify-self: end;
+  width: min(420px, 78%);
+  padding: 18px;
   border: 1px solid rgba(176, 238, 225, 0.24);
   border-radius: 9px;
   background: linear-gradient(145deg, rgba(14, 35, 31, 0.95), rgba(7, 18, 16, 0.88));
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.42), inset 0 1px rgba(255, 255, 255, 0.04);
-  transform: translateY(-48%) rotate(1.4deg);
+  transform: rotate(1deg);
   backdrop-filter: blur(15px);
 }
 
@@ -335,7 +231,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 18px;
+  margin-bottom: 13px;
   color: var(--ink-dim);
   font-size: 9px;
   font-weight: 700;
@@ -363,10 +259,10 @@
 }
 
 .theorem-card > p {
-  margin: 17px 0 22px;
+  margin: 12px 0 15px;
   color: var(--ink);
   font-family: var(--font-display);
-  font-size: 21px;
+  font-size: 17px;
   line-height: 1.35;
 }
 
@@ -380,8 +276,7 @@
   flex-wrap: wrap;
 }
 
-.theorem-card-footer span,
-.floating-proof-pill {
+.theorem-card-footer span {
   color: var(--ink-soft);
   font-family: var(--font-mono);
   font-size: 9px;
@@ -392,32 +287,6 @@
 .theorem-card-footer span {
   padding: 6px 8px;
   border-radius: 3px;
-}
-
-.floating-proof-pill {
-  position: absolute;
-  z-index: 5;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 8px 11px;
-  border-radius: 999px;
-  box-shadow: 0 14px 35px rgba(0, 0, 0, 0.3);
-  backdrop-filter: blur(12px);
-}
-
-.pill-one {
-  top: 28%;
-  left: 18%;
-  color: var(--blue);
-  animation: drift 5s ease-in-out infinite;
-}
-
-.pill-two {
-  right: 4%;
-  bottom: 21%;
-  color: var(--mint);
-  animation: drift 6.2s 0.7s ease-in-out infinite reverse;
 }
 
 @keyframes drift {
@@ -1517,8 +1386,8 @@ footer > p { margin: 0; }
   }
 
   .hero-copy h1 { font-size: clamp(50px, 7vw, 70px); }
-  .hero-visual { min-height: 530px; }
-  .theorem-card { right: 0; width: 86%; }
+  .hero-visual { min-height: 570px; }
+  .theorem-card { width: min(410px, 82%); }
   .explorer-grid { grid-template-columns: 235px minmax(0, 1fr); gap: 16px; }
   .stage-copy strong { font-size: 10px; }
   .stage-header, .story-panel, .replay-section { padding-right: 27px; padding-left: 27px; }
@@ -1543,11 +1412,8 @@ footer > p { margin: 0; }
 
   .hero-copy { padding: 74px 0 10px; }
   .hero-copy h1 { font-size: clamp(48px, 13vw, 72px); }
-  .hero-visual { min-height: 500px; }
-  .flow-field { width: 100%; }
-  .theorem-card { right: 8%; width: 78%; }
-  .pill-one { left: 8%; }
-  .pill-two { right: 7%; }
+  .hero-visual { min-height: 560px; padding: 32px 0 20px; }
+  .theorem-card { width: min(420px, 88%); }
 
   .validation-ribbon { justify-content: flex-start; overflow-x: auto; }
   .validation-ribbon > * { flex: 0 0 auto; }
@@ -1584,13 +1450,9 @@ footer > p { margin: 0; }
   .hero-copy { padding-top: 55px; }
   .hero-copy h1 { font-size: 48px; }
   .hero-actions { align-items: stretch; flex-direction: column; }
-  .hero-metrics { gap: 15px; justify-content: space-between; }
-  .hero-metrics div { padding-left: 10px; }
-  .hero-visual { min-height: 410px; }
-  .theorem-card { right: 3%; width: 94%; padding: 19px; }
+  .hero-visual { min-height: 520px; padding: 24px 0 18px; }
+  .theorem-card { width: 94%; padding: 17px; }
   .theorem-card > p { font-size: 18px; }
-  .pill-one { top: 17%; left: 0; }
-  .pill-two { right: 0; bottom: 13%; }
   .section-heading h2, .verification-heading h2 { font-size: 37px; }
   .lens-switcher { width: 100%; }
   .lens-switcher button { flex: 1; justify-content: center; }

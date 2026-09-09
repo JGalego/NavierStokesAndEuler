@@ -1,0 +1,316 @@
+.references-section {
+  width: min(1280px, calc(100% - 48px));
+  margin: 0 auto;
+  padding: 110px 0 120px;
+  border-top: 1px solid var(--line);
+}
+
+.references-heading {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 430px);
+  gap: 70px;
+  align-items: end;
+  margin-bottom: 38px;
+}
+
+.references-heading h2 {
+  margin: 0;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: clamp(42px, 5vw, 62px);
+  font-weight: 500;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+}
+
+.references-heading > p {
+  margin: 0 0 5px;
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.72;
+}
+
+.primary-reference {
+  position: relative;
+  display: grid;
+  grid-template-columns: 130px minmax(0, 1fr) auto;
+  gap: 28px;
+  align-items: center;
+  min-height: 190px;
+  overflow: hidden;
+  padding: 28px;
+  border: 1px solid rgba(128, 234, 210, 0.28);
+  border-radius: 9px;
+  background:
+    radial-gradient(circle at 10% 50%, rgba(128, 234, 210, 0.12), transparent 24%),
+    linear-gradient(135deg, rgba(128, 234, 210, 0.065), rgba(125, 174, 255, 0.025));
+}
+
+.primary-reference::after {
+  position: absolute;
+  top: -90px;
+  right: 7%;
+  width: 250px;
+  height: 250px;
+  content: '';
+  pointer-events: none;
+  border: 1px solid rgba(128, 234, 210, 0.1);
+  border-radius: 50%;
+  box-shadow: 0 0 0 35px rgba(128, 234, 210, 0.025), 0 0 0 72px rgba(128, 234, 210, 0.016);
+}
+
+.primary-reference-mark {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: 112px;
+  height: 112px;
+  place-items: center;
+  color: #06110f;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  border-radius: 50%;
+  background: var(--mint);
+  box-shadow: 0 0 45px rgba(128, 234, 210, 0.2);
+}
+
+.primary-reference > div:nth-child(2) {
+  position: relative;
+  z-index: 1;
+}
+
+.primary-reference > div:nth-child(2) > span {
+  color: var(--mint);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.primary-reference h3 {
+  margin: 8px 0 8px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 27px;
+  font-weight: 500;
+}
+
+.primary-reference p {
+  max-width: 620px;
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: 11px;
+  line-height: 1.65;
+}
+
+.primary-reference-links {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.primary-reference-links a {
+  display: flex;
+  min-height: 39px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  color: var(--ink);
+  font-size: 10px;
+  font-weight: 700;
+  text-decoration: none;
+  border: 1px solid var(--line-strong);
+  border-radius: 4px;
+  background: rgba(6, 17, 15, 0.5);
+}
+
+.primary-reference-links a:first-child {
+  color: #06110f;
+  border-color: var(--mint);
+  background: var(--mint);
+}
+
+.primary-reference-links a:hover {
+  border-color: var(--mint);
+}
+
+.reference-filter {
+  display: flex;
+  gap: 5px;
+  margin: 34px 0 17px;
+  overflow-x: auto;
+}
+
+.reference-filter button {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 0 12px;
+  color: var(--ink-dim);
+  font-size: 9px;
+  font-weight: 700;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.reference-filter button:hover {
+  color: var(--ink);
+  border-color: var(--line-strong);
+}
+
+.reference-filter button.active {
+  color: var(--mint);
+  border-color: rgba(128, 234, 210, 0.45);
+  background: rgba(128, 234, 210, 0.07);
+}
+
+.reference-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--line);
+}
+
+.reference-entry {
+  position: relative;
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr) 30px;
+  gap: 16px;
+  min-height: 220px;
+  padding: 27px 23px 25px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.reference-entry:nth-child(odd) {
+  padding-right: 30px;
+  border-right: 1px solid var(--line);
+}
+
+.reference-entry:nth-child(even) {
+  padding-left: 30px;
+}
+
+.reference-year {
+  padding-top: 3px;
+  color: var(--mint);
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+.reference-entry span {
+  display: block;
+  color: var(--ink-dim);
+  font-size: 9px;
+  line-height: 1.45;
+}
+
+.reference-entry h3 {
+  margin: 8px 0 10px;
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.reference-entry p {
+  margin: 0 0 12px;
+  color: var(--ink-soft);
+  font-size: 10px;
+  line-height: 1.62;
+}
+
+.reference-entry small {
+  display: block;
+  color: var(--ink-dim);
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  line-height: 1.5;
+}
+
+.reference-entry > a {
+  display: grid;
+  width: 29px;
+  height: 29px;
+  place-items: center;
+  color: var(--ink-dim);
+  text-decoration: none;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  transition: color 180ms ease, border-color 180ms ease, transform 180ms ease;
+}
+
+.reference-entry > a:hover {
+  color: var(--mint);
+  border-color: var(--mint);
+  transform: translateY(-2px);
+}
+
+@media (max-width: 900px) {
+  .references-heading {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .primary-reference {
+    grid-template-columns: 100px minmax(0, 1fr);
+  }
+
+  .primary-reference-mark {
+    width: 90px;
+    height: 90px;
+    font-size: 11px;
+  }
+
+  .primary-reference-links {
+    grid-column: 1 / -1;
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 800px) {
+  .references-section {
+    width: min(100% - 32px, 1280px);
+    padding: 85px 0 95px;
+  }
+
+  .reference-list {
+    grid-template-columns: 1fr;
+  }
+
+  .reference-entry:nth-child(odd),
+  .reference-entry:nth-child(even) {
+    padding: 25px 0;
+    border-right: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .references-heading h2 {
+    font-size: 39px;
+  }
+
+  .primary-reference {
+    grid-template-columns: 1fr;
+    padding: 22px;
+  }
+
+  .primary-reference-mark {
+    width: 72px;
+    height: 72px;
+    font-size: 9px;
+  }
+
+  .primary-reference-links {
+    grid-column: auto;
+    flex-direction: column;
+  }
+
+  .reference-entry {
+    grid-template-columns: 48px minmax(0, 1fr) 30px;
+  }
+}
