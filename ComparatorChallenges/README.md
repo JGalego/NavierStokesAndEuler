@@ -14,9 +14,11 @@ These source revisions are known to work with this repository:
 | `nanoda_bin` | [ammkrn/nanoda_lib](https://github.com/ammkrn/nanoda_lib) | `05055695879dfebb6628a67da88ceca6cd6b0421` |
 
 The external `lean4export` revision is a Lean-4.34-compatible descendant of the
-v4.34.0-rc2 revision in the Lake manifest. The manually triggered
+v4.34.0-rc2 revision in the Lake manifest. The
 [`independent-proof-check.yml`](../.github/workflows/independent-proof-check.yml)
-workflow is an executable recipe for building the pinned tools.
+workflow runs for pull requests targeting `main` and can be dispatched manually
+once it is present on the default branch. It is also an executable recipe for
+building the pinned tools.
 
 From the repository root, fetch only the Mathlib cache before running each check
 inside Comparator's recommended `systemd-run` wrapper:
